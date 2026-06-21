@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Login - CardioVasc{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'style2.css' %}">
+{% endblock %}
+{% block content %}
+<div class="login-page-container">
+    <div class="login-card">
+        
+        <!-- Left Side -->
+        <div class="login-sidebar">
+            <div class="logo-icon">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <h2>CardioVasc</h2>
+            <p>Intelligent Cardiovascular Risk Prediction Using Machine Learning</p>
+            <ul class="features">
+                <li><i class="fas fa-check-circle"></i> AI-Powered Risk Assessment</li>
+                <li><i class="fas fa-calendar-check"></i> Book Appointments Online</li>
+                <li><i class="fas fa-user-md"></i> Expert Cardiologists</li>
+                <li><i class="fas fa-chart-line"></i> Track Your Heart Health</li>
+            </ul>
+        </div>
+        
+        <!-- Right Side -->
+        <div class="login-form-container">
+            <div class="user-icon">
+                <div class="icon-circle">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+            
+            <h2 class="login-title">USER LOGIN</h2>
+
+            <div class="error-message" id="clientError" style="display:none;"></div>
+
+            {% if messages %}
+            <div class="error-message" style="display:block;">
+                {% for message in messages %}
+                <i class="fas fa-exclamation-circle"></i> {{ message }}
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <form method="POST" action="{% url 'accounts:login' %}" id="loginForm" novalidate>
+            {% csrf_token %}
+                <div class="input-group">
+                    <span class="icon"><i class="fas fa-user"></i></span>
+                    <input type="text" id="username" name="username" placeholder="Username" required autocomplete="username">
+                </div>
+                
+                <div class="input-group">
+                    <span class="icon"><i class="fas fa-lock"></i></span>
+                    <input type="password" id="password" name="password" placeholder="Password" required autocomplete="current-password">
+                </div>
+                
+                <button type="submit" class="btn-submit" id="loginBtn">LOGIN</button>
+            </form>
+            
+            <div class="extra-links">
+                <p>Don't have an account? <a href="{% url 'accounts:register' %}">Sign up</a></p>
+            </div>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/login_register.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Doctor Profile - CardioVasc{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'style.css' %}">
+{% endblock %}
+{% block content %}
+<div class="doctor-profile-page" style="max-width:900px;margin:60px auto;padding:40px;background:white;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.1);">
+    {% if profile %}
+    <div style="display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap;">
+        <div style="text-align:center;">
+            {% if profile.image %}
+            <img src="{{ profile.image.url }}" alt="{{ profile.user.username }}" style="width:150px;height:150px;border-radius:50%;object-fit:cover;border:4px solid #6b0300;">
+            {% else %}
+            <div style="width:150px;height:150px;border-radius:50%;background:linear-gradient(135deg,#6b0300,#c0392b);display:flex;align-items:center;justify-content:center;font-size:60px;color:white;">👨‍⚕️</div>
+            {% endif %}
+            <h2 style="margin-top:15px;color:#0a2b3e;">Dr. {{ profile.user.username }}</h2>
+            <p style="color:#c0392b;font-weight:600;">{{ profile.specialty|default:"Cardiology Specialist" }}</p>
+        </div>
+        <div style="flex:1;min-width:250px;">
+            <h3 style="color:#0a2b3e;margin-bottom:20px;border-bottom:2px solid #f0f0f0;padding-bottom:10px;">Profile Details</h3>
+            <p><strong>📧 Email:</strong> {{ profile.email|default:"Not provided" }}</p>
+            <p style="margin-top:10px;"><strong>📞 Phone:</strong> {{ profile.phone_number|default:"Not provided" }}</p>
+            <p style="margin-top:10px;"><strong>🏥 Specialty:</strong> {{ profile.specialty|default:"Cardiology" }}</p>
+            <p style="margin-top:10px;"><strong>👤 Full Name:</strong> {{ profile.full_name|default:profile.user.username }}</p>
+            <div style="margin-top:30px;">
+                <a href="{% url 'book-appointment' %}" style="background:#6b0300;color:white;padding:12px 30px;border-radius:10px;text-decoration:none;font-weight:600;display:inline-block;">📅 Book Appointment</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div style="text-align:center;padding:60px;">
+        <p style="font-size:20px;color:#666;">Doctor profile not found for: <strong>{{ username }}</strong></p>
+        <a href="{% url 'doctor' %}" style="color:#6b0300;text-decoration:none;font-weight:600;margin-top:20px;display:inline-block;">← Back to Our Team</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'style2.css' %}">
+{% endblock %}
+{% block title %}Edit Patient - CardioVasc{% endblock %}
+{% block content %}
+<div class="edit-container">
+    <div class="edit-card">
+        <div class="edit-header">
+            <h2><i class="fas fa-edit"></i> Edit Patient Medical Data</h2>
+            <p>Review and update patient health information</p>
+        </div>
+        
+        <div class="edit-body">
+            <div class="success-msg" id="successMsg">
+                <i class="fas fa-check-circle"></i> Patient data updated successfully!
+            </div>
+            
+            <div class="patient-info" id="patientInfo">
+                <!-- Patient info loaded here -->
+            </div>
+            
+            <form id="editPatientForm">
+                <!-- Basic Information -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-user-circle"></i> Basic Information
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-calendar"></i> Age (Years)</label>
+                            <input type="number" class="form-control" id="age" placeholder="Age">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-venus-mars"></i> Gender</label>
+                            <select class="form-select" id="gender">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-ruler"></i> Height (cm)</label>
+                            <input type="number" class="form-control" id="height" placeholder="Height">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-weight-scale"></i> Weight (kg)</label>
+                            <input type="number" class="form-control" id="weight" placeholder="Weight">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Medical Measurements -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-stethoscope"></i> Medical Measurements
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-heart"></i> Systolic BP</label>
+                            <input type="number" class="form-control" id="apHi" placeholder="Systolic BP">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-heartbeat"></i> Diastolic BP</label>
+                            <input type="number" class="form-control" id="apLo" placeholder="Diastolic BP">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-chart-line"></i> Cholesterol Level</label>
+                            <select class="form-select" id="cholesterol">
+                                <option value="1">Normal</option>
+                                <option value="2">Above Normal</option>
+                                <option value="3">Well Above Normal</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-tint"></i> Glucose Level</label>
+                            <select class="form-select" id="glucose">
+                                <option value="1">Normal</option>
+                                <option value="2">Above Normal</option>
+                                <option value="3">Well Above Normal</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Lifestyle -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-heartbeat"></i> Lifestyle
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-smoking"></i> Smoker</label>
+                            <select class="form-select" id="smoke">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-wine-bottle"></i> Alcohol</label>
+                            <select class="form-select" id="alco">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-running"></i> Physically Active</label>
+                            <select class="form-select" id="active">
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Doctor Advice -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-comment-medical"></i> Doctor's Advice
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-stethoscope"></i> Medical Advice / Prescription</label>
+                            <textarea class="form-control" id="doctorAdvice" rows="4" placeholder="Write your medical advice, prescription, or notes for the patient..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="text-align: center; margin-top: 25px;">
+                    <button type="button" class="btn-save" onclick="savePatientData()">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <a href="{% url 'doctor-dashboard' %}" class="btn-back">
+                        <i class="fas fa-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script src="{% static 'js/doctor-edit-patient-data.js' %}">
+   
+</script>
+{% endblock %}
+{% endblock %}

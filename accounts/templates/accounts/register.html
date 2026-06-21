@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Register - CardioVasc{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'style2.css' %}">
+{% endblock %}
+{% block content %}
+<div class="register-page-container">
+    <div class="register-card">
+        
+        <div class="register-sidebar">
+            <div class="logo-icon">
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <h2>CardioVasc</h2>
+            <p>Intelligent Cardiovascular Risk Prediction Using Machine Learning</p>
+            <ul class="features">
+                <li><i class="fas fa-check-circle"></i> AI-Powered Risk Assessment</li>
+                <li><i class="fas fa-calendar-check"></i> Book Appointments Online</li>
+                <li><i class="fas fa-user-md"></i> Expert Cardiologists</li>
+                <li><i class="fas fa-chart-line"></i> Track Your Heart Health</li>
+            </ul>
+        </div>
+        
+        <div class="register-form-container">
+            <div class="user-icon">
+                <div class="icon-circle">
+                    <i class="fas fa-user-plus"></i>
+                </div>
+            </div>
+            
+            <h2 class="register-title">USER REGISTER</h2>
+
+            <div class="error-message" id="clientError" style="display:none;"></div>
+
+            {% if form.errors %}
+            <div class="error-message" style="display:block;">
+                {% for field in form %}
+                    {% for error in field.errors %}
+                    <i class="fas fa-exclamation-circle"></i> {{ error }}<br>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                <i class="fas fa-exclamation-circle"></i> {{ error }}<br>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <form method="POST" action="{% url 'accounts:register' %}" id="registerForm" novalidate>
+            {% csrf_token %}
+                <div class="input-group">
+                    <span class="icon"><i class="fas fa-id-card"></i></span>
+                    <input type="text" id="full_name" name="full_name" placeholder="Full Name" value="{{ form.full_name.value|default:'' }}">
+                </div>
+
+                <div class="input-group">
+                    <span class="icon"><i class="fas fa-user"></i></span>
+                    <input type="text" id="username" name="username" placeholder="Choose a Username" value="{{ form.username.value|default:'' }}" required autocomplete="username">
+                </div>
+                <div class="username-feedback" id="usernameFeedback" style="font-size:12px;margin:-8px 0 8px 4px;"></div>
+
+                <div class="input-group">
+                    <span class="icon"><i class="fas fa-envelope"></i></span>
+                    <input type="email" id="email" name="email" placeholder="Email Address" value="{{ form.email.value|default:'' }}" required autocomplete="email">
+                </div>
+                <small class="input-hint">* Example: name@company.com</small>
+
+                <div class="input-group">
+                    <span class="icon"><i class="fas fa-phone"></i></span>
+                    <input type="text" id="phone" name="phone" placeholder="Phone Number" value="{{ form.phone.value|default:'' }}" required>
+                </div>
+
+                <div class="input-group">
+                    <span class="icon"><i class="fas fa-user-md"></i></span>
+                    <select id="role" name="role" required>
+                        <option value="" disabled selected>Register as...</option>
+                        <option value="doctor" {% if form.role.value == 'doctor' %}selected{% endif %}>Doctor</option>
+                        <option value="patient" {% if form.role.value == 'patient' %}selected{% endif %}>Patient</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <span class="icon"><i class="fas fa-lock"></i></span>
+                    <input type="password" id="password" name="password" placeholder="Password" required autocomplete="new-password">
+                </div>
+                <small class="input-hint">* Must be at least 8 characters.</small>
+
+                <div class="input-group">
+                    <span class="icon"><i class="fas fa-key"></i></span>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required autocomplete="new-password">
+                </div>
+                
+                <button type="submit" class="btn-submit" id="registerBtn">REGISTER</button>
+            </form>
+            
+            <div class="extra-links">
+                <p>Already have an account? <a href="{% url 'accounts:login' %}">Login</a></p>
+            </div>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script>
+    const CHECK_USERNAME_URL = "{% url 'accounts:check_username' %}";
+</script>
+<script src="{% static 'js/login_register.js' %}"></script>
+{% endblock %}

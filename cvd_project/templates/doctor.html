@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Our Doctors - CardioVasc{% endblock %}
+{% block content %}
+
+<div class="doctors-page-container">
+    <div class="page-header">
+        <h1>👨‍⚕️ Our Doctors</h1>
+        <p>Meet our team of expert cardiologists</p>
+    </div>
+
+    <div class="filter-bar">
+        <div class="filter-group">
+            <button class="filter-btn active" onclick="filterDoctors('all')">All</button>
+            <button class="filter-btn" onclick="filterDoctors('Interventional')">Interventional</button>
+            <button class="filter-btn" onclick="filterDoctors('Electrophysiology')">Electrophysiology</button>
+            <button class="filter-btn" onclick="filterDoctors('Surgery')">Surgery</button>
+        </div>
+        <div class="search-box">
+            <input type="text" id="searchDoctorInput" placeholder="Search by name...">
+            <button onclick="searchDoctorsPage()">Search</button>
+        </div>
+    </div>
+
+    <div class="doctors-grid-page" id="doctorsGridPage">
+        {% for doc in doctors %}
+        <div class="doctor-card-page" data-specialty="{{ doc.specialty|lower }}">
+            <div class="doctor-avatar">
+                {% if doc.image %}
+                <img src="{{ doc.image.url }}" alt="{{ doc.user.username }}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;">
+                {% else %}
+                <span>👨‍⚕️</span>
+                {% endif %}
+            </div>
+            <div class="doctor-info-page">
+                <h3>Dr. {{ doc.user.username }}</h3>
+                <div class="doctor-specialty-page">🏥 {{ doc.specialty|default:"Cardiology Specialist" }}</div>
+                <div class="doctor-details-page">
+                    <span class="doctor-phone-page">📞 {{ doc.phone_number|default:"Contact hospital" }}</span>
+                </div>
+                <div class="doctor-buttons">
+                    <a href="{% url 'doctor-profile' doc.user.username %}" class="btn-profile">View Profile</a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'book-appointment' %}" class="btn-book-page">Book Now</a>
+                    {% else %}
+                    <a href="{% url 'accounts:login' %}" class="btn-book-page">Book Now</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div style="grid-column:1/-1;text-align:center;padding:60px;color:#666;">
+            <p style="font-size:18px;">No doctors registered yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="stats-bar" id="statsBar">📋 {{ doctors|length }} doctor{{ doctors|length|pluralize }} found</div>
+</div>
+
+<script>
+function filterDoctors(specialty) {
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    const cards = document.querySelectorAll('.doctor-card-page');
+    cards.forEach(card => {
+        if (specialty === 'all' || card.dataset.specialty.includes(specialty.toLowerCase())) {
+            card.style.display = '';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+}
+
+function searchDoctorsPage() {
+    const term = document.getElementById('searchDoctorInput')?.value.toLowerCase().trim() || '';
+    const cards = document.querySelectorAll('.doctor-card-page');
+    cards.forEach(card => {
+        const name = card.querySelector('h3')?.textContent.toLowerCase() || '';
+        card.style.display = (!term || name.includes(term)) ? '' : 'none';
+    });
+}
+
+document.getElementById('searchDoctorInput')?.addEventListener('keyup', searchDoctorsPage);
+</script>
+{% endblock %}

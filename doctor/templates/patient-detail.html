@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'style2.css' %}">
+{% endblock %}
+{% block title %}Patient Detail - CardioVasc{% endblock %}
+{% block content %}
+<div class="history-container">
+    <div class="history-card">
+        
+        <!-- Left Sidebar -->
+        <div class="history-sidebar">
+            <div>
+                <div class="sidebar-header">
+                    <div class="logo-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h2>CardioVasc</h2>
+                    <p>Medical Records</p>
+                </div>
+                
+                <div class="doctor-info">
+                    <div class="doctor-avatar">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h4>Dr. Sarah Ahmed</h4>
+                    <p>Cardiologist</p>
+                </div>
+                
+                <div class="sidebar-menu">
+                    <a href="{% url 'doctor-dashboard' %}" class="menu-item">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a href="{% url 'doctor-appointments' %}" class="menu-item">
+                        <i class="fas fa-calendar-alt"></i> Appointments
+                    </a>
+                    <a href="{% url 'doctor-patients' %}" class="menu-item active">
+                        <i class="fas fa-users"></i> My Patients
+                    </a>
+                    <a href="{% url 'doctor-reports' %}" class="menu-item">
+                        <i class="fas fa-chart-line"></i> Reports
+                    </a>
+                    <a href="{% url 'doctor-availability' %}" class="menu-item"><i class="fas fa-clock"></i> Availability</a>
+                    <a href="{% url 'doctor-profile-edit' %}" class="menu-item">
+                        <i class="fas fa-user-edit"></i> Profile
+                    </a>
+                </div>
+            </div>
+            
+            <a href="{% url 'logout' %}" class="menu-item logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+        
+        <!-- Right Content -->
+        <div class="history-content">
+            
+            <!-- Patient Header -->
+            <div class="patient-header">
+                <div class="patient-name">
+                    <i class="fas fa-user-circle" style="color: #c0392b; margin-right: 10px;"></i>
+                    Ahmed Mansour
+                </div>
+                <div class="patient-id">
+                    <i class="fas fa-envelope"></i> ahmed@example.com &nbsp;|&nbsp;
+                    <i class="fas fa-phone"></i> +20 123 456 7890 &nbsp;|&nbsp;
+                    Patient ID: #P-1001
+                </div>
+            </div>
+            
+            <!-- Medical Records Table -->
+            <div class="table-responsive">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Requested Date & Time</th>
+                            <th>Diagnosis</th>
+                            <th>Risk %</th>
+                            <th>Status & Doctor's Advice</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyBody">
+                        <!-- Data loaded by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Back Button -->
+            <div style="margin-top: 25px;">
+                <a href="{% url 'doctor-patients' %}" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Back to Patients List
+                </a>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    // Medical Records Data
+    const medicalRecords = [
+        {
+            id: 1,
+            date: "15 May 2026",
+            time: "10:30 AM",
+            diagnosis: "CVD Detected",
+            risk: "78%",
+            advice: "Please start medication immediately. Follow up in 2 weeks.",
+            status: "confirmed",
+            isCVD: true
+        },
+        {
+            id: 2,
+            date: "01 April 2025",
+            time: "09:15 AM",
+            diagnosis: "Normal",
+            risk: "22%",
+            advice: "Maintain healthy lifestyle. Regular exercise recommended.",
+            status: "confirmed",
+            isCVD: false
+        },
+        {
+            id: 3,
+            date: "10 December 2024",
+            time: "02:00 PM",
+            diagnosis: "CVD Detected",
+            risk: "65%",
+            advice: "Diet modification needed. Cholesterol medication prescribed.",
+            status: "confirmed",
+            isCVD: true
+        },
+        {
+            id: 4,
+            date: "20 June 2024",
+            time: "11:30 AM",
+            diagnosis: "Normal",
+            risk: "15%",
+            advice: "Continue current routine. Annual checkup recommended.",
+            status: "confirmed",
+            isCVD: false
+        }
+    ];
+    
+    function loadHistory() {
+        const tbody = document.getElementById('historyBody');
+        tbody.innerHTML = '';
+        
+        medicalRecords.forEach((record, index) => {
+            const row = document.createElement('tr');
+            
+            // Make older records slightly faded (first record = most recent)
+            const isFirst = index === 0;
+            const rowStyle = isFirst ? '' : 'style="opacity: 0.7;"';
+            row.setAttribute('style', isFirst ? 'background-color: #ffffff;' : 'background-color: #f8f9fa; opacity: 0.7;');
+            
+            const diagnosisBadge = record.isCVD 
+                ? '<span class="badge-cvd"><i class="fas fa-heartbeat"></i> CVD Detected</span>'
+                : '<span class="badge-normal"><i class="fas fa-check-circle"></i> Normal</span>';
+            
+            const statusBadge = record.status === 'confirmed'
+                ? '<span class="badge-confirmed"><i class="fas fa-check-circle"></i> Confirmed by Doctor</span>'
+                : '<span class="badge-pending"><i class="fas fa-clock"></i> Pending Review</span>';
+            
+            // Add cancel badge for older records
+            const cancelBadge = !isFirst ? '<span class="badge-pending" style="background: #95a5a6; margin-top: 5px; display: inline-block;"><i class="fas fa-ban"></i> CANCELED</span>' : '';
+            
+            row.innerHTML = `
+                <td>
+                    <div class="record-date">${record.date}</div>
+                    <div class="record-time"><i class="far fa-clock"></i> ${record.time}</div>
+                    ${cancelBadge}
+                </td>
+                <td>${diagnosisBadge}</td>
+                <td><span class="risk-percent" style="color: ${record.isCVD ? '#e74c3c' : '#27ae60'}">${record.risk}</span></td>
+                <td>
+                    <div class="doctor-advice">${record.advice}</div>
+                    <div style="margin-top: 8px;">${statusBadge}</div>
+                </td>
+                <td class="text-center">
+                    <a href="#" class="btn-advice" onclick="provideAdvice('${record.id}')">
+                        <i class="fas fa-comment-medical"></i> Provide Advice
+                    </a>
+                    ${!isFirst ? '' : '<a href="#" class="btn-confirm" style="margin-left: 5px;" onclick="confirmDiagnosis()"><i class="fas fa-check"></i> Confirm</a>'}
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+    
+    function provideAdvice(recordId) {
+    // Redirect to send-advice.html with the record ID
+    window.location.href = `provide_advice.html?id=${recordId}`;
+}
+    
+    function confirmDiagnosis() {
+        alert(`✅ Diagnosis confirmed!\n\nThe prediction has been marked as confirmed by the doctor.`);
+    }
+    
+    // Load history on page load
+    loadHistory();
+</script>
+{% endblock %}

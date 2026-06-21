@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'style2.css' %}">
+{% endblock %}
+{% block title %}Appointments - CardioVasc{% endblock %}
+{% block content %}
+<div class="appointments-container">
+    <div class="appointments-card">
+        
+        <!-- Left Sidebar -->
+        <div class="appointments-sidebar">
+            <div>
+                <div class="sidebar-header">
+                    <div class="logo-icon"><i class="fas fa-heartbeat"></i></div>
+                    <h2>CardioVasc</h2>
+                    <p>Doctor Portal</p>
+                </div>
+                <div class="doctor-info-sidebar">
+                    <div class="doctor-avatar"><i class="fas fa-user-md"></i></div>
+                    <h4>Dr. {{ profile.user.username|default:request.user.username }}</h4>
+                    <p>{{ profile.specialty|default:"Cardiologist" }}</p>
+                </div>
+                <div class="sidebar-menu">
+                    <a href="{% url 'doctor-dashboard' %}" class="menu-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    <a href="{% url 'doctor-appointments' %}" class="menu-item active"><i class="fas fa-calendar-alt"></i> Appointments</a>
+                    <a href="{% url 'doctor-patients' %}" class="menu-item"><i class="fas fa-users"></i> My Patients</a>
+                    <a href="{% url 'doctor-reports' %}" class="menu-item"><i class="fas fa-chart-line"></i> Reports</a>
+                    <a href="{% url 'doctor-availability' %}" class="menu-item"><i class="fas fa-clock"></i> Availability</a>
+                    <a href="{% url 'doctor-profile-edit' %}" class="menu-item"><i class="fas fa-user-edit"></i> Profile</a>
+                </div>
+            </div>
+            <a href="{% url 'logout' %}" class="menu-item logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+        
+        <!-- Right Content -->
+        <div class="appointments-content">
+            <div class="appointments-header">
+                <h2><i class="fas fa-calendar-alt"></i> Appointments Management</h2>
+            </div>
+            
+            <div class="stats-row">
+                <div class="stat-card" style="border-bottom-color: #3498db;">
+                    <div class="stat-number" style="color: #3498db;">{{ appointments|length }}</div>
+                    <div class="stat-label">Total Appointments</div>
+                </div>
+                <div class="stat-card" style="border-bottom-color: #f39c12;">
+                    <div class="stat-number" style="color: #f39c12;">
+                        {% with appointments|length as total %}
+                        {{ appointments|dictsort:"status"|length }}
+                        {% endwith %}
+                        {{ appointments|length }}
+                    </div>
+                    <div class="stat-label">Pending</div>
+                </div>
+                <div class="stat-card" style="border-bottom-color: #27ae60;">
+                    <div class="stat-number" style="color: #27ae60;">
+                        {% for a in appointments %}{% if a.status == 'confirmed' %}✓{% endif %}{% endfor %}
+                    </div>
+                    <div class="stat-label">Confirmed</div>
+                </div>
+            </div>
+            
+            <div class="table-responsive" style="margin-top:20px;">
+                <table class="appointments-table">
+                    <thead>
+                        <tr>
+                            <th>Patient</th>
+                            <th>Date & Time</th>
+                            <th>Status</th>
+                            <th>Notes</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appt in appointments %}
+                        <tr>
+                            <td>
+                                <strong>{{ appt.patient.username }}</strong><br>
+                                <a href="{% url 'patient_history' appt.patient.id %}" style="color:#c0392b; font-size:13px;">
+                                    <i class="fas fa-file-medical-alt"></i> View History
+                                </a>
+                            </td>
+                            <td>
+                                {{ appt.date }}<br>
+                                <small><i class="far fa-clock"></i> {{ appt.time|default:"N/A" }}</small>
+                            </td>
+                            <td>
+                                <span style="padding:4px 10px; border-radius:12px; font-size:12px; font-weight:bold;
+                                    background:{% if appt.status == 'confirmed' %}#d5f5e3{% elif appt.status == 'cancelled' %}#fadbd8{% else %}#fef9e7{% endif %};
+                                    color:{% if appt.status == 'confirmed' %}#1e8449{% elif appt.status == 'cancelled' %}#c0392b{% else %}#d68910{% endif %};">
+                                    {{ appt.status|capfirst }}
+                                </span>
+                            </td>
+                            <td>{{ appt.notes|default:"-" }}</td>
+                            <td>
+                                {% if appt.status == 'pending' %}
+                                <form method="POST" style="display:inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="appointment_id" value="{{ appt.id }}">
+                                    <input type="hidden" name="action" value="confirm">
+                                    <button type="submit" style="background:#27ae60; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; margin-right:5px;">
+                                        <i class="fas fa-check"></i> Confirm
+                                    </button>
+                                </form>
+                                <form method="POST" style="display:inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="appointment_id" value="{{ appt.id }}">
+                                    <input type="hidden" name="action" value="cancel">
+                                    <button type="submit" style="background:#e74c3c; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer;">
+                                        <i class="fas fa-times"></i> Cancel
+                                    </button>
+                                </form>
+                                {% else %}
+                                <span style="color:#95a5a6; font-size:13px;">No action</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="5" style="text-align:center; padding:30px; color:#95a5a6;">No appointments yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

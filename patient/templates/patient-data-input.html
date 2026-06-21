@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'stylep.css' %}">
+{% endblock %}
+{% block title %}Health Assessment - CardioVasc{% endblock %}
+{% block content %}
+<div class="patient-data-container">
+    <div class="patient-data-card">
+        
+        <!-- Left Sidebar -->
+        <div class="patient-data-sidebar">
+            <div>
+                <div class="sidebar-header">
+                    <div class="logo-icon"><i class="fas fa-heartbeat"></i></div>
+                    <h2>CardioVasc</h2>
+                    <p>Patient Portal</p>
+                </div>
+                <div class="patient-info-sidebar">
+                    <div class="patient-avatar"><i class="fas fa-user-circle"></i></div>
+                    <h4>{{ request.user.username }}</h4>
+                    <p><i class="fas fa-envelope"></i> {{ profile.email|default:request.user.email }}</p>
+                    <p><i class="fas fa-phone"></i> {{ profile.phone_number|default:"" }}</p>
+                </div>
+                <div class="sidebar-menu">
+                    <a href="{% url 'patient-dashboard' %}" class="menu-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    <a href="{% url 'patient-history' %}" class="menu-item"><i class="fas fa-history"></i> My History</a>
+                    <a href="{% url 'patient-appointments' %}" class="menu-item"><i class="fas fa-calendar-alt"></i> Appointments</a>
+                    <a href="{% url 'patient-data-input' %}" class="menu-item active"><i class="fas fa-notes-medical"></i> Health Data</a>
+                    <a href="{% url 'patient-profile' %}" class="menu-item"><i class="fas fa-user-edit"></i> Profile</a>
+                </div>
+            </div>
+            <a href="{% url 'logout' %}" class="menu-item logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+        
+        <!-- Right Content -->
+        <div class="patient-data-content">
+            <div class="data-header">
+                <h2><i class="fas fa-notes-medical"></i> My Health Data</h2>
+                <p>Enter your clinical measurements for cardiovascular risk assessment</p>
+            </div>
+            
+            {% if error %}
+            <div class="error-message" style="display:block; color:red; margin-bottom:15px;">
+                <i class="fas fa-exclamation-circle"></i> {{ error }}
+            </div>
+            {% endif %}
+
+            <div class="info-notice">
+                <p><i class="fas fa-info-circle"></i> This information will be used to assess your cardiovascular health risk. Please provide accurate measurements.</p>
+            </div>
+            
+            <form method="POST" action="{% url 'predict' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- Basic Information -->
+                <div class="form-section">
+                    <div class="section-title"><i class="fas fa-user-circle"></i> Basic Information</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-calendar"></i> Age (Years)</label>
+                            <input type="number" class="form-control" name="age" placeholder="Enter your age" min="1" max="120" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-venus-mars"></i> Gender</label>
+                            <select class="form-select" name="gender" required>
+                                <option value="" disabled selected>Select gender</option>
+                                <option value="1">Female</option>
+                                <option value="2">Male</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-ruler"></i> Height (cm)</label>
+                            <input type="number" class="form-control" name="height" placeholder="Height in cm" min="50" max="250" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-weight-scale"></i> Weight (kg)</label>
+                            <input type="number" class="form-control" name="weight" placeholder="Weight in kg" min="10" max="300" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <!-- Medical Measurements -->
+                <div class="form-section">
+                    <div class="section-title"><i class="fas fa-stethoscope"></i> Medical Measurements</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-heart"></i> Systolic BP (Top Number)</label>
+                            <input type="number" class="form-control" name="ap_hi" placeholder="e.g., 120" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-heartbeat"></i> Diastolic BP (Bottom Number)</label>
+                            <input type="number" class="form-control" name="ap_lo" placeholder="e.g., 80" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-chart-line"></i> Cholesterol Level</label>
+                            <select class="form-select" name="cholesterol" required>
+                                <option value="" disabled selected>Select level</option>
+                                <option value="1">Normal</option>
+                                <option value="2">Above Normal</option>
+                                <option value="3">Well Above Normal</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-tint"></i> Glucose Level</label>
+                            <select class="form-select" name="gluc" required>
+                                <option value="" disabled selected>Select level</option>
+                                <option value="1">Normal</option>
+                                <option value="2">Above Normal</option>
+                                <option value="3">Well Above Normal</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <!-- Lifestyle -->
+                <div class="form-section">
+                    <div class="section-title"><i class="fas fa-heartbeat"></i> Lifestyle</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-smoking"></i> Do you smoke?</label>
+                            <select class="form-select" name="smoke" required>
+                                <option value="" disabled selected>Select</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-wine-bottle"></i> Do you drink alcohol?</label>
+                            <select class="form-select" name="alco" required>
+                                <option value="" disabled selected>Select</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-running"></i> Are you physically active?</label>
+                            <select class="form-select" name="active" required>
+                                <option value="" disabled selected>Select</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medical Files Upload -->
+                <div class="form-section">
+                    <div class="section-title"><i class="fas fa-file-upload"></i> Medical Reports Upload (Optional)</div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-x-ray"></i> Upload Medical Scan</label>
+                            <input type="file" class="form-control" name="medical_report" accept="image/*,application/pdf">
+                            <small class="form-hint">Supported: JPG, PNG, PDF (Max 10MB)</small>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-flask"></i> Upload Lab Results</label>
+                            <input type="file" class="form-control" name="lab_results" accept="image/*,application/pdf">
+                            <small class="form-hint">Supported: JPG, PNG, PDF (Max 10MB)</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn-submit">
+                        <i class="fas fa-heartbeat"></i> Run Analysis
+                    </button>
+                    <a href="{% url 'patient-dashboard' %}" class="btn-cancel">
+                        <i class="fas fa-times"></i> Cancel
+                    </a>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

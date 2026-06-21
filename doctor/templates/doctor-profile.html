@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'style2.css' %}">
+{% endblock %}
+{% block title %}My Profile - CardioVasc{% endblock %}
+{% block content %}
+<div class="doctor-profile-container">
+    <div class="doctor-profile-card">
+        
+        <!-- Left Sidebar -->
+        <div class="doctor-profile-sidebar">
+            <div>
+                <div class="sidebar-header">
+                    <div class="logo-icon"><i class="fas fa-heartbeat"></i></div>
+                    <h2>CardioVasc</h2>
+                    <p>Doctor Portal</p>
+                </div>
+                <div class="doctor-info-sidebar">
+                    <div class="doctor-avatar"><i class="fas fa-user-md"></i></div>
+                    <h4>Dr. {{ profile.user.username|default:request.user.username }}</h4>
+                    <p>{{ profile.specialty|default:"Cardiologist" }}</p>
+                </div>
+                <div class="sidebar-menu">
+                    <a href="{% url 'doctor-dashboard' %}" class="menu-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    <a href="{% url 'doctor-appointments' %}" class="menu-item"><i class="fas fa-calendar-alt"></i> Appointments</a>
+                    <a href="{% url 'doctor-patients' %}" class="menu-item"><i class="fas fa-users"></i> My Patients</a>
+                    <a href="{% url 'doctor-reports' %}" class="menu-item"><i class="fas fa-chart-line"></i> Reports</a>
+                    <a href="{% url 'doctor-availability' %}" class="menu-item"><i class="fas fa-clock"></i> Availability</a>
+                    <a href="{% url 'doctor-profile-edit' %}" class="menu-item active"><i class="fas fa-user-edit"></i> Profile</a>
+                </div>
+            </div>
+            <a href="{% url 'logout' %}" class="menu-item logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+        
+        <!-- Right Content -->
+        <div class="doctor-profile-content">
+            <div class="profile-header">
+                <h2><i class="fas fa-user-md"></i> My Profile</h2>
+            </div>
+            
+            <!-- View Mode -->
+            <div class="info-section">
+                <div class="section-title"><i class="fas fa-user"></i> Personal Information</div>
+                <div class="info-grid">
+                    <div class="info-card">
+                        <p><strong><i class="fas fa-user"></i> Username:</strong> {{ request.user.username }}</p>
+                        <p><strong><i class="fas fa-id-badge"></i> Full Name:</strong> {{ profile.full_name|default:"-" }}</p>
+                        <p><strong><i class="fas fa-envelope"></i> Email:</strong> {{ profile.email|default:request.user.email|default:"-" }}</p>
+                        <p><strong><i class="fas fa-phone"></i> Phone:</strong> {{ profile.phone_number|default:"-" }}</p>
+                    </div>
+                    <div class="info-card">
+                        <p><strong><i class="fas fa-stethoscope"></i> Specialty:</strong> {{ profile.specialty|default:"-" }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Edit Form -->
+            <div class="edit-form active" style="margin-top:25px;">
+                <div class="section-title"><i class="fas fa-edit"></i> Edit Profile</div>
+                <form method="POST" action="{% url 'doctor-profile-edit' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" name="full_name" value="{{ profile.full_name|default:'' }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" value="{{ profile.email|default:'' }}">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" class="form-control" name="phone_number" value="{{ profile.phone_number|default:'' }}">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Specialty</label>
+                            <input type="text" class="form-control" name="specialty" value="{{ profile.specialty|default:'' }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Profile Photo</label>
+                        <input type="file" class="form-control" name="image" accept="image/*">
+                        {% if profile.image %}<small>Current: {{ profile.image.name }}</small>{% endif %}
+                    </div>
+                    <div style="text-align:center; margin-top:20px;">
+                        <button type="submit" class="btn-save">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                        <a href="{% url 'doctor-dashboard' %}" class="btn-back" style="margin-left:10px;">
+                            <i class="fas fa-arrow-left"></i> Back to Dashboard
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

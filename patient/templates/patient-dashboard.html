@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'stylep2.css' %}">
+{% endblock %}
+{% block title %}Patient Dashboard - CardioVasc{% endblock %}
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-card">
+        
+        <!-- Left Sidebar -->
+        <div class="dashboard-sidebar">
+            <div>
+                <div class="sidebar-header">
+                    <div class="logo-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h2>CardioVasc</h2>
+                    <p>Patient Portal</p>
+                </div>
+                
+                <div class="patient-info-sidebar">
+                    <div class="patient-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <h4 id="patientName">{{ patient_name|default:request.user.username }}</h4>
+                    <p><i class="fas fa-envelope"></i> <span id="patientEmail">{{ profile.email|default:request.user.email }}</span></p>
+                    <p><i class="fas fa-phone"></i> <span id="patientPhone">{{ profile.phone_number|default:"" }}</span></p>
+                </div>
+                
+                <div class="sidebar-menu">
+                    <a href="{% url 'patient-dashboard' %}" class="menu-item active">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a href="{% url 'patient-history' %}" class="menu-item">
+                        <i class="fas fa-history"></i> My History
+                    </a>
+                    <a href="{% url 'patient-appointments' %}" class="menu-item">
+                        <i class="fas fa-calendar-alt"></i> Appointments
+                    </a>
+                    <a href="{% url 'patient-data-input' %}" class="menu-item">
+                        <i class="fas fa-notes-medical"></i> Health Data
+                    </a>
+                    <a href="{% url 'patient-profile' %}" class="menu-item">
+                        <i class="fas fa-user-edit"></i> Profile
+                    </a>
+                </div>
+            </div>
+            
+            <a href="{% url 'logout' %}" class="menu-item logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+        
+        <!-- Right Content -->
+        <div class="dashboard-content">
+            
+            <div class="welcome-header">
+                <h2><i class="fas fa-heartbeat"></i> Welcome, {{ patient_name|default:request.user.username }}!</h2>
+                <p>Monitor your heart health, track your records, and manage appointments</p>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card" style="border-bottom-color: #3498db;" onclick="window.location.href='/patient/history/'">
+                    <div class="stat-icon">📋</div>
+                    <div class="stat-number" style="color: #3498db;">{{ total_records }}</div>
+                    <div class="stat-label">Total Records</div>
+                </div>
+                <div class="stat-card" style="border-bottom-color: #e74c3c;" onclick="window.location.href='/patient/history/'">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-number" style="color: #e74c3c;">{{ cvd_detected }}</div>
+                    <div class="stat-label">CVD Detected</div>
+                </div>
+                <div class="stat-card" style="border-bottom-color: #27ae60;" onclick="window.location.href='/patient/history/'">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-number" style="color: #27ae60;">{{ normal_results }}</div>
+                    <div class="stat-label">Normal Results</div>
+                </div>
+                <div class="stat-card" style="border-bottom-color: #f39c12;" onclick="window.location.href='/patient/appointments/'">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-number" style="color: #f39c12;">{{ upcoming_appointments }}</div>
+                    <div class="stat-label">Upcoming Appointments</div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="quick-actions">
+                <div class="section-title">
+                    <i class="fas fa-bolt"></i> Quick Actions
+                </div>
+                <div class="actions-grid">
+                    <a href="{% url 'patient-data-input' %}" class="action-card">
+                        <div class="action-icon">🩺</div>
+                        <div class="action-title">New Health Assessment</div>
+                        <div class="action-desc">Check your cardiovascular risk</div>
+                    </a>
+                    <a href="{% url 'book-appointment' %}" class="action-card">
+                        <div class="action-icon">📅</div>
+                        <div class="action-title">Book Appointment</div>
+                        <div class="action-desc">Schedule a consultation with a doctor</div>
+                    </a>
+                    <a href="{% url 'patient-history' %}" class="action-card">
+                        <div class="action-icon">📋</div>
+                        <div class="action-title">View History</div>
+                        <div class="action-desc">Review your past medical records</div>
+                    </a>
+                    <a href="{% url 'patient-profile' %}" class="action-card">
+                        <div class="action-icon">👤</div>
+                        <div class="action-title">Update Profile</div>
+                        <div class="action-desc">Manage your personal information</div>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="recent-activity">
+                <div class="section-title">
+                    <i class="fas fa-clock"></i> Recent Activity
+                </div>
+                <ul class="activity-list">
+                    {% for record in recent_records %}
+                    <li style="padding:12px 0;border-bottom:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center;">
+                        <div>
+                            <span style="font-weight:600;">
+                                {% if record.prediction_result == 1 %}⚠️ CVD Detected{% else %}✅ Normal Result{% endif %}
+                            </span>
+                            <span style="color:#999;font-size:13px;margin-left:10px;">{{ record.created_at|date:"d M Y" }}</span>
+                        </div>
+                        <a href="{% url 'prediction-detail' record.pk %}" style="color:#1a73e8;font-size:13px;text-decoration:none;">View →</a>
+                    </li>
+                    {% empty %}
+                    <li style="padding:20px;text-align:center;color:#999;">
+                        No records yet. <a href="{% url 'patient-data-input' %}" style="color:#1a73e8;">Take your first assessment →</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+{% block extra_js %}
+
+{% endblock %}
+{% endblock %}

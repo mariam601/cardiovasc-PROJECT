@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}FAQ - CardioVasc{% endblock %}
+{% block content %}
+<ul class="nav-menu">
+        <li><a href="{% url 'homepage' %}">Home</a></li>
+        <li><a href="{% url 'faq' %}">FAQ</a></li>
+        <li><a href="{% url 'doctor' %}">Our Team</a></li>
+        <li><a href="{% url 'about' %}">About Us</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+    </ul>
+</div>
+<!-- Header placeholder -->
+
+
+<div class="faq-container">
+    <div class="faq-header">
+        <h1>❓ Frequently Asked Questions</h1>
+        <p>Find answers to common questions about our services, appointments, and facilities</p>
+    </div>
+    
+    <div class="faq-body">
+        
+        <!-- Search Box -->
+        <div class="search-faq">
+            <input type="text" id="searchInput" placeholder="🔍 Search for your question..." onkeyup="searchFAQ()">
+        </div>
+        
+        <!-- Category Buttons -->
+        <div class="faq-categories">
+            <button class="category-btn active" onclick="filterCategory('all')">All</button>
+            <button class="category-btn" onclick="filterCategory('appointments')">📅 Appointments</button>
+            <button class="category-btn" onclick="filterCategory('doctors')">👨‍⚕️ Doctors</button>
+            <button class="category-btn" onclick="filterCategory('facilities')">🏥 Facilities</button>
+            <button class="category-btn" onclick="filterCategory('payments')">💰 Payments</button>
+            <button class="category-btn" onclick="filterCategory('general')">ℹ️ General</button>
+        </div>
+        
+        <div id="noResults" class="no-results">🔍 No questions found matching your search</div>
+        
+        <!-- Appointments Section -->
+        <div id="appointments" class="faq-section">
+            <h2 style="color: #6b0300; margin-bottom: 20px;">📅 Appointments</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    How can I book an appointment? <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    You can book an appointment in three ways:<br>
+                    • Online: Visit our website and click on "Book Now" on any doctor's profile<br>
+                    • Phone: Call us at +91 44 8765 4321<br>
+                    • In-person: Visit our hospital reception between 8 AM - 8 PM
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Do I need a referral to see a specialist? <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    No, you don't need a referral. You can directly book an appointment with any of our specialists. However, if you have a family doctor, we recommend keeping them informed about your cardiac care.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Can I cancel or reschedule my appointment? <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes, you can cancel or reschedule your appointment up to 24 hours before the scheduled time without any charges. Please call our appointment desk at +91 44 8765 4321 or email appointments@cardiovasc.com
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    What documents should I bring for my first visit? <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Please bring:<br>
+                    • Valid ID proof (Aadhar, Passport, Driver's License)<br>
+                    • Previous medical records (if any)<br>
+                    • List of current medications<br>
+                    • Insurance card (if applicable)
+                </div>
+            </div>
+        </div>
+        
+        <!-- Doctors Section -->
+        <div id="doctors" class="faq-section">
+            <h2 style="color: #6b0300; margin-bottom: 20px;">👨‍⚕️ Doctors</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    How do I know which doctor to choose? <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    You can view each doctor's profile including their specialty, experience, education, and patient ratings. For complex cases, our reception team can help recommend the right specialist based on your condition.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Are the doctors at CardioVasc qualified? <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes, all our doctors are highly qualified with MBBS, MD/DM degrees from reputed institutions. Many have international training and fellowships. Their complete credentials are available on their profile pages.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Can I change my doctor after booking? <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes, you can request a change of doctor. Please contact our appointment desk at least 24 hours before your scheduled appointment.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Facilities Section -->
+        <div id="facilities" class="faq-section">
+            <h2 style="color: #6b0300; margin-bottom: 20px;">🏥 Facilities</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    What emergency services are available? <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    We have 24/7 emergency services including:<br>
+                    • Ambulance service (call +91 44 1234 5678)<br>
+                    • Emergency trauma care<br>
+                    • Cardiac emergency unit<br>
+                    • 24/7 pharmacy<br>
+                    • ICU and critical care
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Is parking available at the hospital? <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes, we have a dedicated multi-level parking facility for patients and visitors. Parking is free for all patients and attendants.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Do you have telemedicine services? <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes, we offer telemedicine consultations for follow-up appointments. You can book a video consultation through our website or by calling our appointment desk.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Payments Section -->
+        <div id="payments" class="faq-section">
+            <h2 style="color: #6b0300; margin-bottom: 20px;">💰 Payments</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    What payment methods are accepted? <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    We accept:<br>
+                    • Cash<br>
+                    • Credit/Debit Cards (Visa, Mastercard, RuPay)<br>
+                    • UPI (Google Pay, PhonePe, Paytm)<br>
+                    • Net Banking<br>
+                    • Health Insurance (cashless)
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Do you accept health insurance? <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes, we have tie-ups with all major insurance providers. Please bring your insurance card at the time of admission. Our insurance desk will help you with the cashless claim process.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Is there any discount for senior citizens? <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes, we offer a 10% discount on consultation fees for senior citizens (above 65 years). Please carry a valid age proof to avail the discount.
+                </div>
+            </div>
+        </div>
+        
+        <!-- General Section -->
+        <div id="general" class="faq-section">
+            <h2 style="color: #6b0300; margin-bottom: 20px;">ℹ️ General</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    What are the hospital visiting hours? <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    General visiting hours: 4:00 PM - 7:00 PM daily. ICU visiting hours: 5:00 PM - 5:30 PM. Only 2 visitors allowed per patient at a time.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    Is the hospital wheelchair accessible? <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes, the entire hospital is wheelchair accessible with ramps, wide corridors, and accessible restrooms. Wheelchairs are available at the main entrance.
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    How do I provide feedback about my experience? <span class="icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    You can provide feedback through:<br>
+                    • Contact Us form on our website<br>
+                    • Feedback box at the hospital reception<br>
+                    • Email: feedback@cardiovasc.com<br>
+                    • Call our patient relations officer: +91 44 7777 8888
+                </div>
+            </div>
+        </div>
+        
+        <!-- Contact Support -->
+        <div class="contact-support">
+            <h3>💬 Still have questions?</h3>
+            <p>Our support team is here to help you</p>
+            <button class="support-btn" onclick="window.location.href="{% url 'contact' %}"">Contact Support →</button>
+        </div>
+    </div>
+</div>
+
+<!-- Footer placeholder -->
+<div id="footer-placeholder"></div>
+<!-- Footer -->
+<script src="js/faq.js"></script>
+{% endblock %}

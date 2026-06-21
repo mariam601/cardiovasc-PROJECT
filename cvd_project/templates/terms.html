@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Terms - CardioVasc{% endblock %}
+{% block content %}
+<ul class="nav-menu">
+        <li><a href="{% url 'homepage' %}">Home</a></li>
+        <li><a href="{% url 'faq' %}">FAQ</a></li>
+        <li><a href="{% url 'doctor' %}">Our Team</a></li>
+        <li><a href="{% url 'about' %}">About Us</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+    </ul>
+</div>
+
+<div class="terms-container">
+    <div class="terms-header">
+        <h1>📜 Terms & Conditions</h1>
+        <p>Last Updated: May 2026</p>
+    </div>
+    
+    <div class="terms-body">
+        
+        <div class="terms-section">
+            <h2>1. 📋 Introduction</h2>
+            <p>Welcome to CardioVasc Heart Institute. By accessing or using our website and services, you agree to comply with and be bound by the following terms and conditions. Please read them carefully.</p>
+            <p>CardioVasc Heart Institute provides cardiovascular healthcare services, including online appointment booking, doctor consultations, and health prediction tools. These terms apply to all users, including patients, doctors, and visitors.</p>
+        </div>
+        
+        <div class="terms-section">
+            <h2>2. 🏥 Medical Disclaimer</h2>
+            <p><strong>Important:</strong> The information provided on this website is for general informational purposes only and is not a substitute for professional medical advice.</p>
+            <ul>
+                <li>Always seek the advice of your physician or other qualified health provider with any questions you may have regarding a medical condition.</li>
+                <li>Never disregard professional medical advice or delay in seeking it because of something you have read on this website.</li>
+                <li>The cardiovascular risk prediction tool is for educational and awareness purposes only. It does not provide a definitive medical diagnosis.</li>
+                <li>In case of a medical emergency, call your local emergency services immediately.</li>
+            </ul>
+        </div>
+        
+        <div class="terms-section">
+            <h2>3. 👨‍⚕️ Appointment Booking</h2>
+            <ul>
+                <li>Appointments are subject to doctor availability.</li>
+                <li>Patients must provide accurate personal and medical information when booking appointments.</li>
+                <li>Cancellation or rescheduling of appointments should be done at least 24 hours in advance.</li>
+                <li>CardioVasc reserves the right to cancel or reschedule appointments due to unforeseen circumstances.</li>
+                <li>Consultation fees are as displayed on the doctor's profile and may be subject to change.</li>
+            </ul>
+        </div>
+        
+        <div class="terms-section">
+            <h2>4. 🔐 Privacy & Data Protection</h2>
+            <p>We take your privacy seriously. All personal and medical information provided to CardioVasc is protected in accordance with applicable data protection laws.</p>
+            <ul>
+                <li>Your personal data will only be used for appointment scheduling and healthcare services.</li>
+                <li>We do not share your medical information with third parties without your explicit consent.</li>
+                <li>You have the right to access, correct, or delete your personal data.</li>
+                <li>All data transmitted through our platform is encrypted and securely stored.</li>
+            </ul>
+        </div>
+        
+        <div class="terms-section">
+            <h2>5. 👨‍💻 Doctor Registration</h2>
+            <ul>
+                <li>Doctors registering on our platform must provide accurate and verifiable credentials.</li>
+                <li>Registered doctors are responsible for maintaining the confidentiality of their account.</li>
+                <li>CardioVasc reserves the right to verify doctor qualifications and credentials.</li>
+                <li>Doctors must adhere to professional ethical standards in all patient interactions.</li>
+                <li>CardioVasc may suspend or terminate doctor accounts providing false information or engaging in unprofessional conduct.</li>
+            </ul>
+        </div>
+        
+        <div class="terms-section">
+            <h2>6. 💰 Payments & Refunds</h2>
+            <ul>
+                <li>Consultation fees are clearly displayed on doctor profiles.</li>
+                <li>Payments are processed through secure payment gateways.</li>
+                <li>Refunds for cancelled appointments will be processed within 7-10 business days.</li>
+                <li>No refunds for no-shows or late cancellations (less than 24 hours notice).</li>
+                <li>All fees are in Indian Rupees (₹) and include applicable taxes.</li>
+            </ul>
+        </div>
+        
+        <div class="terms-section">
+            <h2>7. ⚖️ Limitation of Liability</h2>
+            <p>To the fullest extent permitted by law, CardioVasc Heart Institute shall not be liable for:</p>
+            <ul>
+                <li>Any indirect, incidental, or consequential damages arising from your use of our services.</li>
+                <li>Any medical outcomes resulting from consultations or treatments.</li>
+                <li>Any technical issues, downtime, or data loss on our platform.</li>
+                <li>Any actions taken based on information provided by the prediction tool.</li>
+            </ul>
+        </div>
+        
+        <div class="terms-section">
+            <h2>8. 📝 User Responsibilities</h2>
+            <ul>
+                <li>Provide accurate and truthful information when using our services.</li>
+                <li>Respect the privacy and rights of doctors and other users.</li>
+                <li>Not use the platform for any unlawful or harmful purposes.</li>
+                <li>Not attempt to hack, disrupt, or damage our website or services.</li>
+                <li>Report any technical issues or inappropriate behavior to our support team.</li>
+            </ul>
+        </div>
+        
+        <div class="terms-section">
+            <h2>9. 🔄 Modifications to Terms</h2>
+            <p>CardioVasc Heart Institute reserves the right to modify these terms and conditions at any time. Changes will be effective immediately upon posting on this page. Your continued use of our services constitutes acceptance of the modified terms. We encourage you to review these terms periodically.</p>
+        </div>
+        
+        <div class="terms-section">
+            <h2>10. 📞 Contact Information</h2>
+            <p>If you have any questions about these Terms & Conditions, please contact us:</p>
+            <ul>
+                <li>📧 Email: legal@cardiovasc.com</li>
+                <li>📞 Phone: +91 44 1234 5678</li>
+                <li>📍 Address: CardioVasc Heart Institute, Velachery, Chennai, Tamil Nadu 600004</li>
+            </ul>
+        </div>
+        
+        <div class="last-updated">
+            Last Updated: May 4, 2026 | Version 1.0
+        </div>
+    </div>
+    
+    <div class="terms-footer">
+        <button class="btn-back" onclick="window.location.href="{% url 'homepage' %}"">← Back to Home</button>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'stylep2.css' %}">
+{% endblock %}
+{% block title %}Prediction Detail - CardioVasc{% endblock %}
+{% block content %}
+<div class="exam-wrapper">
+    <div class="exam-header">
+        <h2><i class="fas fa-stethoscope"></i> Examination Details</h2>
+        <p>{{ record.created_at|date:"d M Y, H:i" }}</p>
+    </div>
+    
+    <div class="exam-body">
+        <table style="width:100%;border-collapse:collapse;">
+            <tr style="border-bottom:1px solid #eee;padding:10px 0;">
+                <td style="padding:12px;color:#555;font-weight:600;">Age</td>
+                <td style="padding:12px;color:#0a2b3e;font-weight:700;">{{ record.age }} years</td>
+            </tr>
+            <tr style="border-bottom:1px solid #eee;">
+                <td style="padding:12px;color:#555;font-weight:600;">Gender</td>
+                <td style="padding:12px;color:#0a2b3e;font-weight:700;">{{ record.get_gender_display }}</td>
+            </tr>
+            <tr style="border-bottom:1px solid #eee;">
+                <td style="padding:12px;color:#555;font-weight:600;">Height / Weight</td>
+                <td style="padding:12px;color:#0a2b3e;font-weight:700;">{{ record.height }} cm / {{ record.weight }} kg (BMI: {{ record.get_bmi }})</td>
+            </tr>
+            <tr style="border-bottom:1px solid #eee;">
+                <td style="padding:12px;color:#555;font-weight:600;">Blood Pressure</td>
+                <td style="padding:12px;font-weight:700;color:{% if record.ap_hi >= 140 %}#c0392b{% else %}#0a2b3e{% endif %};">{{ record.ap_hi }}/{{ record.ap_lo }} mmHg</td>
+            </tr>
+            <tr style="border-bottom:1px solid #eee;">
+                <td style="padding:12px;color:#555;font-weight:600;">Cholesterol</td>
+                <td style="padding:12px;color:#0a2b3e;font-weight:700;">{{ record.get_cholesterol_display }}</td>
+            </tr>
+            <tr style="border-bottom:1px solid #eee;">
+                <td style="padding:12px;color:#555;font-weight:600;">Glucose</td>
+                <td style="padding:12px;color:#0a2b3e;font-weight:700;">{{ record.get_gluc_display }}</td>
+            </tr>
+            <tr style="border-bottom:1px solid #eee;">
+                <td style="padding:12px;color:#555;font-weight:600;">Smoking / Alcohol / Active</td>
+                <td style="padding:12px;color:#0a2b3e;font-weight:700;">
+                    {% if record.smoke %}🚬 Smoker{% else %}✅ Non-smoker{% endif %} &nbsp;|&nbsp;
+                    {% if record.alco %}🍺 Drinks{% else %}✅ No alcohol{% endif %} &nbsp;|&nbsp;
+                    {% if record.active %}🏃 Active{% else %}⚠️ Inactive{% endif %}
+                </td>
+            </tr>
+            <tr style="border-bottom:1px solid #eee;">
+                <td style="padding:12px;color:#555;font-weight:600;">Risk Score</td>
+                <td style="padding:12px;font-weight:800;font-size:20px;color:{% if record.risk_score >= 50 %}#c0392b{% else %}#27ae60{% endif %};">{{ record.risk_score|floatformat:1 }}% — {{ record.get_risk_label }}</td>
+            </tr>
+            <tr style="border-bottom:1px solid #eee;">
+                <td style="padding:12px;color:#555;font-weight:600;">Result</td>
+                <td style="padding:12px;font-weight:700;color:{% if record.prediction_result == 1 %}#c0392b{% else %}#27ae60{% endif %};">
+                    {% if record.prediction_result == 1 %}⚠️ CVD Detected{% else %}✅ No CVD{% endif %}
+                </td>
+            </tr>
+            {% if record.advice %}
+            <tr>
+                <td style="padding:12px;color:#555;font-weight:600;">Doctor's Advice</td>
+                <td style="padding:12px;color:#0a2b3e;">{{ record.advice }}</td>
+            </tr>
+            {% endif %}
+        </table>
+        <div style="margin-top:25px;display:flex;gap:15px;flex-wrap:wrap;">
+            <a href="{% url 'patient-history' %}" style="background:#0a2b3e;color:white;padding:10px 20px;border-radius:10px;text-decoration:none;font-weight:600;">← Back to History</a>
+            <a href="{% url 'patient-dashboard' %}" style="background:#6b0300;color:white;padding:10px 20px;border-radius:10px;text-decoration:none;font-weight:600;">Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

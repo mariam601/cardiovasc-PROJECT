@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}CardioVasc - Cardiovascular Prediction & Care{% endblock %}
+
+{% block content %}
+
+
+
+<!-- Hospital Header -->
+<div class="hospital-header">
+    <div class="hospital-name">🫀 CardioVasc Heart Institute, Chennai</div>
+    <div class="address">Avenue, Near Marina Beach, Velachery, Chennai, Tamil Nadu 600004</div>
+</div>
+
+<!-- Overview Section -->
+ <div class="hero-banner">
+    <img src="{% static 'img/c5097b9fa0a8682d763775ec79f2f7c6.jpg' %}" alt="CardioVasc Heart Care">
+    
+
+</div>
+<div class="overview">
+    <h2>Overview</h2>
+    <p>CardioVasc, Chennai, is dedicated to delivering exceptional cardiovascular healthcare services. Focused on providing patient-centered care, the hospital is equipped with state-of-the-art facilities and a comprehensive medical team. Advanced specialties include emergency cardiac care, interventional cardiology, electrophysiology, and preventive cardiology. With AI-powered prediction models and advanced imaging centers, the hospital ensures precise diagnosis and effective treatments. Additionally, CardioVasc offers rehabilitative therapies and telemedicine options for convenient follow-up care.</p>
+
+    <!-- Prediction Model -->
+    <div class="prediction-box">
+    <!-- فيديو الخلفية -->
+    <video autoplay loop muted playsinline class="bg-video">
+        <source src="{% static 'img/video_2026-05-03_18-12-26.mp4' %}" type="video/mp4">
+    </video>
+    
+    <!-- المحتوى اللي فوق الفيديو -->
+    <div class="prediction-content">
+        <h3>🔬 Cardiovascular Risk Prediction Model</h3>
+         <p>Click below to access our AI-powered cardiovascular risk assessment tool.</p>
+        <a href="javascript:void(0);" onclick="checkBeforeModel()" class="btn-predict-link">🔍 Go to Prediction Model →</a>
+        <div class="result" id="predictionResult"></div>
+    </div>
+</div>
+
+    <p>CardioVasc Heart Institute is designed to meet a wide range of cardiovascular healthcare needs, providing patients with exceptional care through advanced facilities and services. The institute features cutting-edge technology and a comprehensive range of services, including emergency cardiac care, interventional cardiology, electrophysiology, and preventive cardiology. With its state-of-the-art diagnostic imaging and laboratory services, the hospital ensures precise diagnoses and effective treatments. Additionally, CardioVasc offers rehabilitative therapies and telemedicine options for convenient follow-up care.</p>
+</div>
+
+<!-- Facilities Section -->
+<div class="facilities-section">
+    <h2>Facilities</h2>
+    <div class="facilities-grid">
+        <div class="facility-item">🏥 24/7 Emergency and Trauma Care: Dedicated emergency unit with on-site trauma specialists, fully equipped to handle urgent medical situations and critical care.</div>
+        <div class="facility-item">❤️ Cardiac Care Unit: Specialized cardiac center providing comprehensive services, including diagnostics, surgery, rehabilitation, and preventive care.</div>
+        <div class="facility-item">🤖 Robotic Surgery Suite: Advanced minimally invasive robotic-assisted surgery options for various procedures, ensuring precision and faster recovery times.</div>
+        <div class="facility-item">🩺 Multi-Specialty Intensive Care Unit (ICU): State-of-the-art ICU facilities for critical care, with units for neonatal, pediatric, and adult patients.</div>
+        <div class="facility-item">🎗️ Oncology Department: Complete cancer care center with chemotherapy, radiation therapy, and surgical oncology services.</div>
+        <div class="facility-item">🦴 Orthopedic and Joint Replacement Center: Expert orthopedic care including joint replacements, spine surgeries, and sports injury treatments.</div>
+        <div class="facility-item">💧 Dialysis Center: Renal care services offering hemodialysis and peritoneal dialysis for patients with kidney conditions.</div>
+        <div class="facility-item">📷 Advanced Imaging and Diagnostic Center: High-resolution MRI, CT, ultrasound, and X-ray imaging to support accurate diagnoses.</div>
+        <div class="facility-item">🦽 Physical Rehabilitation and Therapy: Comprehensive physical and occupational therapy services for recovery and rehabilitation post-surgery or injury.</div>
+        <div class="facility-item">💊 Pharmacy and Laboratory Services: In-house pharmacy and diagnostic laboratories for convenient and quick access to medications and test results.</div>
+        <div class="facility-item">💻 Telemedicine Services: Remote consultations and follow-ups with specialists via secure video conferencing for patient convenience.</div>
+    </div>
+</div>
+
+<div style="text-align:center;">
+    <a href="{% url 'doctor' %}" class="btn-view-team" style="display:inline-block;padding:10px 24px;background-color:#c0392b;color:white;border-radius:8px;text-decoration:none;font-weight:bold;margin-bottom:20px;">👨‍⚕️ Meet Our Full Team</a>
+</div>
+
+<div class="testimonials-section">
+    <h2 class="testimonials-title">Words Of Treated Patients</h2>
+    
+    <div class="testimonials-carousel-container">
+        <div class="testimonials-slider" id="testimonialsSlider">
+            <!-- السلايدات هتتعمل بواسطة JS -->
+        </div>
+        
+        <!-- أزرار التحكم (اختياري) -->
+        <button class="carousel-prev" onclick="prevSlide()">❮</button>
+        <button class="carousel-next" onclick="nextSlide()">❯</button>
+    </div>
+    
+    <!-- نقاط التقدم -->
+    <div class="carousel-dots" id="carouselDots"></div>
+</div>
+
+<!-- Footer -->
+{% endblock %}
+{% block extra_js %}
+<script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

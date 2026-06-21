@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'stylep.css' %}">
+{% endblock %}
+{% block title %}My History - CardioVasc{% endblock %}
+{% block content %}
+<div class="patient-history-container">
+    <div class="patient-history-card">
+        
+        <!-- Left Sidebar -->
+        <div class="patient-history-sidebar">
+            <div>
+                <div class="sidebar-header">
+       {% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'stylep.css' %}">
+{% endblock %}
+{% block title %}My History - CardioVasc{% endblock %}
+{% block content %}
+<div class="patient-history-container">
+    <div class="patient-history-card">
+        
+        <!-- Left Sidebar -->
+        <div class="patient-history-sidebar">
+            <div>
+                <div class="sidebar-header">
+                    <div class="logo-icon"><i class="fas fa-heartbeat"></i></div>
+                    <h2>CardioVasc</h2>
+                    <p>Patient Portal</p>
+                </div>
+                <div class="patient-info-sidebar">
+                    <div class="patient-avatar">
+                        {% if profile.image %}
+                        <img src="{{ profile.image.url }}" style="width:60px;height:60px;border-radius:50%;object-fit:cover;">
+                        {% else %}
+                        <i class="fas fa-user-circle"></i>
+                        {% endif %}
+                    </div>
+                    <h4>{{ profile.full_name|default:request.user.username }}</h4>
+                    <p><i class="fas fa-envelope"></i> {{ profile.email|default:request.user.email }}</p>
+                    <p><i class="fas fa-phone"></i> {{ profile.phone_number|default:"—" }}</p>
+                </div>
+                <div class="sidebar-menu">
+                    <a href="{% url 'patient-dashboard' %}" class="menu-item"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    <a href="{% url 'patient-history' %}" class="menu-item active"><i class="fas fa-history"></i> My History</a>
+                    <a href="{% url 'patient-appointments' %}" class="menu-item"><i class="fas fa-calendar-alt"></i> Appointments</a>
+                    <a href="{% url 'patient-data-input' %}" class="menu-item"><i class="fas fa-notes-medical"></i> Health Data</a>
+                    <a href="{% url 'patient-profile' %}" class="menu-item"><i class="fas fa-user-edit"></i> Profile</a>
+                </div>
+            </div>
+            <a href="{% url 'logout' %}" class="menu-item logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+        
+        <!-- Right Content -->
+        <div class="patient-history-content">
+            <div class="history-header">
+                <h3><i class="fas fa-history"></i> My Medical History</h3>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="stats-row">
+                <div class="stat-card" style="border-bottom-color:#3498db;">
+                    <div class="stat-icon">📋</div>
+                    <div class="stat-number" style="color:#3498db;">{{ total_records }}</div>
+                    <div class="stat-label">Total Records</div>
+                </div>
+                <div class="stat-card" style="border-bottom-color:#e74c3c;">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-number" style="color:#e74c3c;">{{ cvd_count }}</div>
+                    <div class="stat-label">CVD Cases</div>
+                </div>
+                <div class="stat-card" style="border-bottom-color:#27ae60;">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-number" style="color:#27ae60;">{{ normal_count }}</div>
+                    <div class="stat-label">Normal Results</div>
+                </div>
+            </div>
+            
+            <!-- Medical History Table -->
+            <div class="table-responsive">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Diagnosis</th>
+                            <th>Risk %</th>
+                            <th>BMI</th>
+                            <th>Doctor's Advice</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in records %}
+                        <tr>
+                            <td>{{ record.created_at|date:"d M Y" }}</td>
+                            <td>
+                                {% if record.prediction_result == 1 %}
+                                <span style="color:#e74c3c;font-weight:bold;">⚠️ CVD Detected</span>
+                                {% elif record.prediction_result == 0 %}
+                                <span style="color:#27ae60;font-weight:bold;">✅ Normal</span>
+                                {% else %}
+                                <span style="color:#999;">—</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if record.risk_score is not None %}
+                                <span style="color:{% if record.risk_score >= 60 %}#e74c3c{% elif record.risk_score >= 35 %}#f39c12{% else %}#27ae60{% endif %};font-weight:bold;">
+                                    {{ record.risk_score|floatformat:1 }}%
+                                </span>
+                                {% else %}—{% endif %}
+                            </td>
+                            <td>{{ record.get_bmi|default:"—" }}</td>
+                            <td>{{ record.advice|default:"No advice yet"|truncatechars:50 }}</td>
+                            <td><a href="{% url 'prediction-detail' record.pk %}" style="color:#1a73e8;text-decoration:none;font-weight:600;">View →</a></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" style="text-align:center;padding:40px;color:#999;">
+                                No records yet. <a href="{% url 'patient-data-input' %}" style="color:#1a73e8;">Take your first assessment →</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div>
+                <a href="{% url 'patient-dashboard' %}" class="btn-back"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+             <div class="logo-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h2>CardioVasc</h2>
+                    <p>Patient Portal</p>
+                </div>
+                
+                <div class="patient-info-sidebar">
+                    <div class="patient-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <h4>Ahmed Mansour</h4>
+                    <p><i class="fas fa-envelope"></i> ahmed@example.com</p>
+                    <p><i class="fas fa-phone"></i> +20 123 456 7890</p>
+                </div>
+                
+                <div class="sidebar-menu">
+                    <a href="{% url 'patient-dashboard' %}" class="menu-item">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a href="{% url 'patient-history' %}" class="menu-item active">
+                        <i class="fas fa-history"></i> My History
+                    </a>
+                    <a href="{% url 'patient-appointments' %}" class="menu-item">
+                        <i class="fas fa-calendar-alt"></i> Appointments
+                    </a>
+                    <a href="{% url 'patient-data-input' %}" class="menu-item">
+                        <i class="fas fa-notes-medical"></i> Health Data
+                    </a>
+                    <a href="{% url 'patient-profile' %}" class="menu-item">
+                        <i class="fas fa-user-edit"></i> Profile
+                    </a>
+                </div>
+            </div>
+            
+            <a href="{% url 'logout' %}" class="menu-item logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+        
+        <!-- Right Content -->
+        <div class="patient-history-content">
+            
+            <div class="history-header">
+                <h3><i class="fas fa-history"></i> My Medical History</h3>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="stats-row">
+                <div class="stat-card" style="border-bottom-color: #3498db;">
+                    <div class="stat-icon">📋</div>
+                    <div class="stat-number" style="color: #3498db;" id="totalExams">4</div>
+                    <div class="stat-label">Total Records</div>
+                </div>
+                <div class="stat-card" style="border-bottom-color: #e74c3c;">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-number" style="color: #e74c3c;" id="cvdCount">2</div>
+                    <div class="stat-label">CVD Cases</div>
+                </div>
+                <div class="stat-card" style="border-bottom-color: #27ae60;">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-number" style="color: #27ae60;" id="normalCount">2</div>
+                    <div class="stat-label">Normal Results</div>
+                </div>
+            </div>
+            
+            <!-- Medical History Table -->
+            <div class="table-responsive">
+                <table class="history-table" id="historyTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Diagnosis</th>
+                            <th>Risk %</th>
+                            <th>Doctor's Advice</th>
+                        </tr>
+                    </thead>
+                    <tbody id="historyBody">
+                        <!-- Data loaded by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Back Button -->
+            <div>
+                <a href="{% url 'patient-dashboard' %}" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+            
+        </div>
+    </div>
+</div>
+<!-- Footer -->
+{% block extra_js %}
+<script src="{% static 'jsp/patient-history.js' %}">
+    
+</script>
+{% endblock %}
+{% endblock %}

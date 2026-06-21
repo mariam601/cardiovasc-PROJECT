@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CardioVasc{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<!-- Top Navigation -->
+<div class="top-nav">
+    <div class="logo">
+        <a href="{% url 'homepage' %}">
+            <img src="{% static 'img/Screenshot 2026-05-03 185524.png' %}" alt="CardioVasc Logo">
+        </a>
+    </div>
+    <ul class="nav-menu">
+        <li><a href="{% url 'homepage' %}">Home</a></li>
+        <li><a href="{% url 'faq' %}">FAQ</a></li>
+        <li><a href="{% url 'doctor' %}">Our Team</a></li>
+        <li><a href="{% url 'about' %}">About Us</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+    </ul>
+
+    {% if user.is_authenticated %}
+    <!-- Logged in: show My Dashboard only -->
+    <div class="dashboard-btn-container">
+        <a href="{% url 'dashboard_redirect' %}" class="btn-dashboard-nav">My Dashboard</a>
+    </div>
+    {% else %}
+    <!-- Not logged in: show Login + Register -->
+    <div class="auth-buttons" id="authButtons">
+        <a href="{% url 'accounts:login' %}" class="btn-login-nav">Login</a>
+        <a href="{% url 'accounts:register' %}" class="btn-register-nav">Register</a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Messages -->
+{% if messages %}
+<div class="messages-container" style="position:fixed;top:80px;right:20px;z-index:9999;">
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}" style="padding:12px 20px;border-radius:8px;margin-bottom:10px;font-size:14px;box-shadow:0 4px 12px rgba(0,0,0,0.15);background:{% if message.tags == 'error' %}#fee2e2{% else %}#d1fae5{% endif %};color:{% if message.tags == 'error' %}#c0392b{% else %}#065f46{% endif %};">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Main Content -->
+{% block content %}{% endblock %}
+
+<!-- Footer -->
+<footer>
+    <div class="footer-grid">
+        <div class="footer-col">
+            <h4>Important Links</h4>
+            <p onclick="window.location.href='{% url 'homepage' %}'">Home Page</p>
+            <p onclick="window.location.href='{% url 'faq' %}'">FAQ</p>
+            <p onclick="window.location.href='{% url 'about' %}'">About Us</p>
+            <p onclick="window.location.href='{% url 'contact' %}'">Contact Us</p>
+        </div>
+        <div class="footer-col">
+            <p onclick="window.location.href='{% url 'terms' %}'">Terms & Conditions</p>
+            <p onclick="window.location.href='{% url 'refund' %}'">Refund Policy</p>
+            <p onclick="window.location.href='{% url 'doctor' %}'">Find Doctors</p>
+        </div>
+        <div class="footer-col">
+            <h4>Healthcare Resources</h4>
+            <p onclick="window.location.href='{% url 'privacy' %}'">Privacy Policy | Disclaimer | Contact</p>
+        </div>
+    </div>
+    <div class="copyright">
+        © 2026 CardioVasc Heart Institute. All rights reserved.
+    </div>
+</footer>
+
+{% block extra_js %}{% endblock %}
+
+<script>
+    // Auto-hide messages after 4 seconds
+    setTimeout(() => {
+        document.querySelectorAll('.alert').forEach(el => el.style.opacity = '0');
+    }, 4000);
+</script>
+
+</body>
+</html>

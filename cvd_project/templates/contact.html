@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Contact Us - CardioVasc{% endblock %}
+{% block content %}
+<ul class="nav-menu">
+        <li><a href="{% url 'homepage' %}">Home</a></li>
+        <li><a href="{% url 'faq' %}">FAQ</a></li>
+        <li><a href="{% url 'doctor' %}">Our Team</a></li>
+        <li><a href="{% url 'about' %}">About Us</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+    </ul>
+</div>
+
+<!-- Header placeholder -->
+
+
+<div class="contact-container">
+    <div class="contact-header">
+        <h1>📞 Contact Us</h1>
+        <p>We're here to help. Reach out to us anytime.</p>
+    </div>
+    
+    <div class="contact-body">
+        
+        <!-- Emergency Box -->
+        <div class="emergency-box">
+            <h3>🚨 For Medical Emergencies</h3>
+            <div class="emergency-number">📞 +91 44 1234 5678</div>
+            <p>24/7 Emergency Ambulance Service Available</p>
+        </div>
+        
+        <!-- Contact Grid -->
+        <div class="contact-grid">
+            <!-- Contact Info -->
+            <div class="contact-info">
+                <div class="info-card">
+                    <div class="info-icon">📍</div>
+                    <h3>Visit Us</h3>
+                    <p>CardioVasc Heart Institute</p>
+                    <p>Velachery Main Road,</p>
+                    <p>Near Marina Beach,</p>
+                    <p>Chennai, Tamil Nadu 600004</p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">📞</div>
+                    <h3>Call Us</h3>
+                    <p><strong>Emergency:</strong> +91 44 1234 5678</p>
+                    <p><strong>Appointments:</strong> +91 44 8765 4321</p>
+                    <p><strong>Ambulance:</strong> +91 44 9999 8888</p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">✉️</div>
+                    <h3>Email Us</h3>
+                    <p><strong>General:</strong> <a href="mailto:info@cardiovasc.com">info@cardiovasc.com</a></p>
+                    <p><strong>Appointments:</strong> <a href="mailto:appointments@cardiovasc.com">appointments@cardiovasc.com</a></p>
+                    <p><strong>Support:</strong> <a href="mailto:support@cardiovasc.com">support@cardiovasc.com</a></p>
+                </div>
+                
+                <div class="info-card">
+                    <div class="info-icon">🕒</div>
+                    <h3>Working Hours</h3>
+                    <p><strong>OP Hours:</strong> Monday - Saturday: 8:00 AM - 8:00 PM</p>
+                    <p><strong>Emergency:</strong> 24/7 (All days)</p>
+                    <p><strong>Pharmacy:</strong> 24/7</p>
+                    <p><strong>Sunday:</strong> Emergency Only</p>
+                </div>
+            </div>
+            
+            <!-- Contact Form -->
+            <div class="contact-form">
+                <div class="info-card" style="padding: 30px;">
+                    <div class="info-icon">📝</div>
+                    <h3>Send us a Message</h3>
+                    <p>Fill out the form below and we'll get back to you within 24 hours.</p>
+                    
+                    <div class="success-message" id="successMsg">
+                        ✅ Thank you! Your message has been sent successfully.
+                    </div>
+                    
+                    <form id="contactForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Full Name *</label>
+                                <input type="text" id="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Email Address *</label>
+                                <input type="email" id="email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" id="phone" placeholder="+91 XXXXX XXXXX">
+                            </div>
+                            <div class="form-group">
+                                <label>Subject *</label>
+                                <select id="subject">
+                                    <option value="appointment">Appointment Booking</option>
+                                    <option value="inquiry">General Inquiry</option>
+                                    <option value="feedback">Feedback</option>
+                                    <option value="complaint">Complaint</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Message *</label>
+                            <textarea id="message" rows="5" placeholder="Please write your message here..." required></textarea>
+                        </div>
+                        
+                        <button type="button" class="btn-submit" onclick="sendMessage()">Send Message →</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Social Media -->
+        <div class="info-card" style="text-align: center;">
+            <div class="info-icon">🌐</div>
+            <h3>Follow Us</h3>
+            <p>Stay connected with us on social media for health tips and updates</p>
+            <div class="social-links">
+                <a href="#" class="social-link">📘</a>
+                <a href="#" class="social-link">📸</a>
+                <a href="#" class="social-link">🐦</a>
+                <a href="#" class="social-link">🔗</a>
+                <a href="#" class="social-link">▶️</a>
+            </div>
+        </div>
+        
+        <!-- Map -->
+        <div class="map-container">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3888.5!2d80.227!3d12.976!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a525d76c6d5d1b5%3A0x8e5c8b5c5c5c5c5c!2sChennai%2C%20Tamil%20Nadu!5e0!3m2!1sen!2sin!4v1699999999999!5m2!1sen!2sin" 
+                allowfullscreen="" 
+                loading="lazy">
+            </iframe>
+        </div>
+        
+        <!-- WhatsApp Button -->
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="https://wa.me/919876543210" class="btn-submit" style="background: #25D366; text-decoration: none; display: inline-block;">
+                💬 Chat on WhatsApp
+            </a>
+        </div>
+         <div style="text-align: center;">
+            <button class="btn-back" onclick="window.location.href="{% url 'homepage' %}"">← Back to Home</button>
+        </div>
+    </div>
+</div>
+
+<!-- Footer placeholder -->
+<div id="footer-placeholder"></div>
+<!-- Footer -->
+{% block extra_js %}
+<script src="{% static 'js/contact-script.js' %}"></script>
+{% endblock %}
+{% endblock %}

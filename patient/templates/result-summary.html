@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'stylep2.css' %}">
+{% endblock %}
+{% block title %}Result Summary - CardioVasc{% endblock %}
+{% block content %}
+
+<div class="result-container">
+    <div class="result-card">
+        
+        <!-- Result Box -->
+        <div class="result-box" id="resultBox">
+            {% if is_high_risk %}
+            <div class="result-icon"><i class="fas fa-exclamation-triangle" style="color:#c0392b;font-size:60px;"></i></div>
+            <div class="result-title high-risk">⚠️ High Risk Detected</div>
+            <div class="risk-percent high-risk">{{ record.risk_score|floatformat:1 }}%</div>
+            <div class="result-message">Your cardiovascular risk assessment indicates a high probability of CVD. Please consult with a doctor immediately for further evaluation.</div>
+            {% else %}
+            <div class="result-icon"><i class="fas fa-check-circle" style="color:#27ae60;font-size:60px;"></i></div>
+            <div class="result-title low-risk">✅ Low Risk Detected</div>
+            <div class="risk-percent low-risk">{{ record.risk_score|floatformat:1 }}%</div>
+            <div class="result-message">Your cardiovascular risk assessment indicates a low probability of CVD. Continue maintaining a healthy lifestyle and regular checkups.</div>
+            {% endif %}
+        </div>
+        
+        <!-- Health Summary -->
+        <div class="summary-box">
+            <div class="summary-title"><i class="fas fa-chart-line"></i> Health Summary</div>
+            <ul class="summary-list">
+                <li><span class="summary-label"><i class="fas fa-heart"></i> Systolic BP:</span><span class="summary-value {% if record.ap_hi >= 140 %}high-risk{% endif %}">{{ record.ap_hi }} mmHg</span></li>
+                <li><span class="summary-label"><i class="fas fa-heartbeat"></i> Diastolic BP:</span><span class="summary-value {% if record.ap_lo >= 90 %}high-risk{% endif %}">{{ record.ap_lo }} mmHg</span></li>
+                <li><span class="summary-label"><i class="fas fa-chart-line"></i> Cholesterol:</span><span class="summary-value">{{ record.get_cholesterol_display }}</span></li>
+                <li><span class="summary-label"><i class="fas fa-tint"></i> Glucose:</span><span class="summary-value">{{ record.get_gluc_display }}</span></li>
+                <li><span class="summary-label"><i class="fas fa-calculator"></i> BMI:</span><span class="summary-value">{{ record.get_bmi }}</span></li>
+                <li><span class="summary-label"><i class="fas fa-calendar"></i> Date:</span><span class="summary-value">{{ record.created_at|date:"d M Y" }}</span></li>
+                {% if record.advice %}
+                <li><span class="summary-label"><i class="fas fa-user-md"></i> Doctor's Advice:</span><span class="summary-value">{{ record.advice }}</span></li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <!-- Risk Assessment -->
+        <div class="risk-factors-box">
+            <div class="risk-factors-title"><i class="fas fa-list"></i> Risk Assessment</div>
+            {% if is_high_risk %}
+            <div class="risk-factors-list">
+                {% if record.smoke %}<span class="risk-factor-badge"><i class="fas fa-exclamation-circle"></i> Smoking</span>{% endif %}
+                {% if record.alco %}<span class="risk-factor-badge"><i class="fas fa-exclamation-circle"></i> Alcohol Use</span>{% endif %}
+                {% if not record.active %}<span class="risk-factor-badge"><i class="fas fa-exclamation-circle"></i> Physical Inactivity</span>{% endif %}
+                {% if record.cholesterol >= 2 %}<span class="risk-factor-badge"><i class="fas fa-exclamation-circle"></i> High Cholesterol</span>{% endif %}
+                {% if record.ap_hi >= 140 %}<span class="risk-factor-badge"><i class="fas fa-exclamation-circle"></i> High Blood Pressure</span>{% endif %}
+            </div>
+            {% else %}
+            <div class="no-factors"><i class="fas fa-smile-wink"></i> No major risk factors identified. Continue maintaining a healthy lifestyle!</div>
+            {% endif %}
+        </div>
+
+        <!-- Uploaded Files -->
+        {% if record.medical_report or record.lab_results %}
+        <div class="uploaded-files-box">
+            <div class="files-title"><i class="fas fa-paperclip"></i> Medical Reports Attached</div>
+            <div class="files-grid">
+                {% if record.medical_report %}
+                <div class="file-item" onclick="window.open('{{ record.medical_report.url }}', '_blank')">
+                    <div class="pdf-icon"><i class="fas fa-file-pdf"></i></div>
+                    <div class="file-name">Medical Report</div>
+                </div>
+                {% endif %}
+                {% if record.lab_results %}
+                <div class="file-item" onclick="window.open('{{ record.lab_results.url }}', '_blank')">
+                    <div class="pdf-icon"><i class="fas fa-file-pdf"></i></div>
+                    <div class="file-name">Lab Results</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Buttons -->
+        <div class="buttons-group">
+            <a href="{% url 'patient-data-input' %}" class="btn-new"><i class="fas fa-plus-circle"></i> New Prediction</a>
+            <a href="{% url 'book-appointment' %}" class="btn-book"><i class="fas fa-calendar-plus"></i> Book Doctor</a>
+            <a href="{% url 'patient-dashboard' %}" class="btn-new" style="background:#0a2b3e;"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+        </div>
+        
+    </div>
+</div>
+{% endblock %}

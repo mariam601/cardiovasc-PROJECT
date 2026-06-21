@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'style2.css' %}">
+{% endblock %}
+{% block title %}Availability - CardioVasc{% endblock %}
+{% block content %}
+<div class="availability-container">
+    <div class="availability-card">
+        
+        <!-- Left Sidebar -->
+        <div class="availability-sidebar">
+            <div>
+                <div class="sidebar-header">
+                    <div class="logo-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h2>CardioVasc</h2>
+                    <p>Doctor Portal</p>
+                </div>
+                
+                <div class="doctor-info-sidebar">
+                    <div class="doctor-avatar">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h4>Dr. Sarah Ahmed</h4>
+                    <p>Cardiologist</p>
+                </div>
+                
+                <div class="sidebar-menu">
+                    <a href="{% url 'doctor-dashboard' %}" class="menu-item">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a href="{% url 'doctor-availability' %}" class="menu-item">
+                        <i class="fas fa-calendar-alt"></i> Appointments
+                    </a>
+                    <a href="{% url 'doctor-patients' %}" class="menu-item">
+                        <i class="fas fa-users"></i> My Patients
+                    </a>
+                    <a href="{% url 'doctor-reports' %}" class="menu-item">
+                        <i class="fas fa-chart-line"></i> Reports
+                    </a>
+                    <a href="{% url 'doctor-availability' %}" class="menu-item active">
+                        <i class="fas fa-clock"></i> Availability
+                    </a>
+                    <a href="{% url 'doctor-profile-edit' %}" class="menu-item">
+                        <i class="fas fa-user-edit"></i> Profile
+                    </a>
+                </div>
+            </div>
+            
+            <a href="{% url 'logout' %}" class="menu-item logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+        
+        <!-- Right Content -->
+        <div class="availability-content">
+            
+            <div class="availability-header">
+                <h3><i class="fas fa-clock"></i> Manage Your Availability</h3>
+            </div>
+            
+            <!-- Add Slot Form -->
+            <div class="form-section">
+                <div class="form-title">
+                    <i class="fas fa-plus-circle"></i> Add New Time Slot
+                </div>
+                <form id="addSlotForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-calendar"></i> Select Day</label>
+                            <select class="form-select" id="slotDay" required>
+                                <option value="" disabled selected>Select day</option>
+                                <option value="Monday">Monday</option>
+                                <option value="Tuesday">Tuesday</option>
+                                <option value="Wednesday">Wednesday</option>
+                                <option value="Thursday">Thursday</option>
+                                <option value="Friday">Friday</option>
+                                <option value="Saturday">Saturday</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-hourglass-start"></i> Start Time</label>
+                            <input type="time" class="form-control" id="startTime" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label"><i class="fas fa-hourglass-end"></i> End Time</label>
+                            <input type="time" class="form-control" id="endTime" required>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-submit" onclick="addTimeSlot()">
+                        <i class="fas fa-plus"></i> Add Slot
+                    </button>
+                </form>
+            </div>
+            
+            <hr>
+            
+            <!-- Current Slots -->
+            <div class="slots-title">
+                <i class="fas fa-list"></i> Your Current Slots
+            </div>
+            <ul class="slots-list" id="slotsList">
+                <!-- Slots will be loaded here -->
+            </ul>
+            
+            <!-- Back Button -->
+            <div style="margin-top: 25px;">
+                <a href="{% url 'doctor-dashboard' %}" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    // Time slots data
+    let timeSlots = [
+        { id: 1, day: "Monday", startTime: "10:00", endTime: "12:00", isBooked: false },
+        { id: 2, day: "Tuesday", startTime: "09:00", endTime: "11:00", isBooked: true },
+        { id: 3, day: "Wednesday", startTime: "14:00", endTime: "16:00", isBooked: false },
+        { id: 4, day: "Thursday", startTime: "11:00", endTime: "13:00", isBooked: false },
+        { id: 5, day: "Friday", startTime: "09:00", endTime: "12:00", isBooked: true }
+    ];
+    
+    let nextId = 6;
+    
+    function formatTime(time) {
+        if (!time) return '';
+        let [hours, minutes] = time.split(':');
+        let period = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12;
+        return `${hours}:${minutes} ${period}`;
+    }
+    
+    function loadSlots() {
+        const slotsList = document.getElementById('slotsList');
+        slotsList.innerHTML = '';
+        
+        if (timeSlots.length === 0) {
+            slotsList.innerHTML = '<div class="empty-slots"><i class="fas fa-calendar-times" style="font-size: 40px; opacity: 0.3; margin-bottom: 10px; display: block;"></i>No slots added yet.</div>';
+            return;
+        }
+        
+        timeSlots.forEach(slot => {
+            const li = document.createElement('li');
+            li.style.borderLeftColor = slot.isBooked ? '#f39c12' : '#27ae60';
+            
+            li.innerHTML = `
+                <div class="slot-info">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span><strong>${slot.day}</strong></span>
+                    <i class="fas fa-clock"></i>
+                    <span>${formatTime(slot.startTime)} - ${formatTime(slot.endTime)}</span>
+                </div>
+                <div>
+                    ${slot.isBooked ? 
+                        '<span class="badge-booked"><i class="fas fa-check-circle"></i> Booked</span>' : 
+                        '<span class="badge-available"><i class="fas fa-check"></i> Available</span>'}
+                </div>
+            `;
+            slotsList.appendChild(li);
+        });
+    }
+    
+    function addTimeSlot() {
+        const day = document.getElementById('slotDay').value;
+        const startTime = document.getElementById('startTime').value;
+        const endTime = document.getElementById('endTime').value;
+        
+        if (!day || !startTime || !endTime) {
+            alert('⚠️ Please fill all fields');
+            return;
+        }
+        
+        if (startTime >= endTime) {
+            alert('⚠️ End time must be after start time');
+            return;
+        }
+        
+        // Check for duplicate slots
+        const existingSlot = timeSlots.find(slot => 
+            slot.day === day && slot.startTime === startTime && slot.endTime === endTime
+        );
+        
+        if (existingSlot) {
+            alert('⚠️ This time slot already exists!');
+            return;
+        }
+        
+        const newSlot = {
+            id: nextId++,
+            day: day,
+            startTime: startTime,
+            endTime: endTime,
+            isBooked: false
+        };
+        
+        timeSlots.push(newSlot);
+        
+        // Clear form
+        document.getElementById('slotDay').value = '';
+        document.getElementById('startTime').value = '';
+        document.getElementById('endTime').value = '';
+        
+        // Reload slots
+        loadSlots();
+        
+       
+    }
+    
+    // Load slots on page load
+    loadSlots();
+</script>
+{% endblock %}

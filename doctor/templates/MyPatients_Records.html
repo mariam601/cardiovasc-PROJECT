@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'style2.css' %}">
+{% endblock %}
+{% block title %}My Patients - CardioVasc{% endblock %}
+{% block content %}
+<div class="patients-page-container">
+    <div class="patients-card">
+        
+        <!-- Left Sidebar -->
+        <div class="patients-sidebar">
+            <div>
+                <div class="sidebar-header">
+                    <div class="logo-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h2>CardioVasc</h2>
+                    <p>Doctor Dashboard</p>
+                </div>
+                
+                <div class="doctor-info">
+                    <div class="doctor-avatar">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h4>Dr. Sarah Ahmed</h4>
+                    <p>Cardiologist</p>
+                </div>
+                
+                <div class="sidebar-menu">
+                    <a href="{% url 'doctor-dashboard' %}" class="menu-item">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a href="{% url 'doctor-appointments' %}" class="menu-item">
+                        <i class="fas fa-calendar-alt"></i> Appointments
+                    </a>
+                    <a href="{% url 'doctor-patients' %}" class="menu-item active">
+                        <i class="fas fa-users"></i> My Patients
+                    </a>
+                    <a href="{% url 'doctor-reports' %}" class="menu-item">
+                        <i class="fas fa-chart-line"></i> Reports
+                    </a>
+                    <a href="{% url 'doctor-availability' %}" class="menu-item"><i class="fas fa-clock"></i> Availability</a>
+                    <a href="{% url 'doctor-profile-edit' %}" class="menu-item">
+                        <i class="fas fa-user-edit"></i> Profile
+                    </a>
+                </div>
+            </div>
+            
+            <a href="{% url 'logout' %}" class="menu-item logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+        
+        <!-- Right Content -->
+        <div class="patients-content">
+            
+            <div class="content-header">
+                <h3><i class="fas fa-users"></i> My Patients Medical Records</h3>
+            </div>
+            
+            <!-- Mini Stats -->
+            <div class="stats-mini">
+                <div class="stat-mini-card">
+                    <i class="fas fa-user-friends"></i>
+                    <div>
+                        <div class="number" id="totalPatients">0</div>
+                        <div class="label">Total Patients</div>
+                    </div>
+                </div>
+                <div class="stat-mini-card">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <div>
+                        <div class="number" id="cvdCount">0</div>
+                        <div class="label">CVD Cases</div>
+                    </div>
+                </div>
+                <div class="stat-mini-card">
+                    <i class="fas fa-check-circle"></i>
+                    <div>
+                        <div class="number" id="normalCount">0</div>
+                        <div class="label">Normal</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Search Bar -->
+            <div class="search-section">
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search by patient name..." onkeyup="searchPatients()">
+                    </div>
+                    <button class="btn-search" onclick="searchPatients()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button class="btn-clear" onclick="clearSearch()">
+                        <i class="fas fa-times"></i> Clear
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Patients Table -->
+            <div class="table-responsive">
+                <table class="patients-table" id="patientsTable">
+                    <thead>
+                        <tr>
+                            <th>Patient Name</th>
+                            <th>Last Prediction Result</th>
+                            <th>Risk %</th>
+                            <th>Last Update</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="patientsBody">
+                        <!-- Data will be loaded by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script src="{% static 'js/doctors-patients.js' %}"></script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,308 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'style2.css' %}">
+{% endblock %}
+{% block title %}Reports - CardioVasc{% endblock %}
+{% block content %}
+<div class="reports-container">
+    <div class="reports-card">
+        
+        <!-- Left Sidebar -->
+        <div class="reports-sidebar">
+            <div>
+                <div class="sidebar-header">
+                    <div class="logo-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h2>CardioVasc</h2>
+                    <p>Doctor Portal</p>
+                </div>
+                
+                <div class="doctor-info-sidebar">
+                    <div class="doctor-avatar">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h4>Dr. Sarah Ahmed</h4>
+                    <p>Cardiologist</p>
+                </div>
+                
+                <div class="sidebar-menu">
+                    <a href="{% url 'doctor-dashboard' %}" class="menu-item">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a href="{% url 'doctor-appointments' %}" class="menu-item">
+                        <i class="fas fa-calendar-alt"></i> Appointments
+                    </a>
+                    <a href="{% url 'doctor-patients' %}" class="menu-item">
+                        <i class="fas fa-users"></i> My Patients
+                    </a>
+                    <a href="{% url 'doctor-reports' %}" class="menu-item active">
+                        <i class="fas fa-chart-line"></i> Reports
+                    </a>
+                    <a href="{% url 'doctor-availability' %}" class="menu-item">
+                        <i class="fas fa-clock"></i> Availability
+                    </a>
+                    <a href="{% url 'doctor-profile-edit' %}" class="menu-item">
+                        <i class="fas fa-user-edit"></i> Profile
+                    </a>
+                </div>
+            </div>
+            
+            <a href="{% url 'logout' %}" class="menu-item logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+        
+        <!-- Right Content -->
+        <div class="reports-content">
+            
+            <div class="reports-header">
+                <h2><i class="fas fa-chart-line"></i> Patient Reports</h2>
+            </div>
+            
+            <!-- Patient Selector -->
+            <div class="patient-selector">
+                <div class="selector-title">
+                    <i class="fas fa-user-search"></i> Select Patient
+                </div>
+                <div class="patient-search">
+                    <select id="patientSelect">
+                        <option value="" disabled selected>-- Select a patient --</option>
+                        <option value="Ahmed Mansour">Ahmed Mansour</option>
+                        <option value="Fatima Al-Zahra">Fatima Al-Zahra</option>
+                        <option value="Omar El-Sayed">Omar El-Sayed</option>
+                        <option value="Laila Mahmoud">Laila Mahmoud</option>
+                    </select>
+                    <button class="btn-load" onclick="loadPatientReport()">
+                        <i class="fas fa-chart-bar"></i> Generate Report
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Report Content -->
+            <div id="reportContent" class="report-content">
+                
+                <!-- Patient Info -->
+                <div class="patient-info-card" id="patientInfoCard">
+                    <!-- Dynamic content -->
+                </div>
+                
+                <!-- Stats Grid -->
+                <div class="stats-grid" id="statsGrid">
+                    <!-- Dynamic content -->
+                </div>
+                
+                <!-- Risk Trend -->
+                <div class="risk-trend" id="riskTrend">
+                    <!-- Dynamic content -->
+                </div>
+                
+                <!-- Medical History Table -->
+                <div class="risk-trend" style="overflow-x: auto;">
+                    <div class="trend-title">
+                        <i class="fas fa-history"></i> Medical History Records
+                    </div>
+                    <table class="history-table" id="historyTable">
+                        <!-- Dynamic content -->
+                    </table>
+                </div>
+                
+            </div>
+            
+            <div id="noPatientMsg" class="empty-state" style="display: block;">
+                <i class="fas fa-chart-line" style="font-size: 50px; opacity: 0.3;"></i>
+                <p>Select a patient to view their health report</p>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    // Mock patient data
+    const patientData = {
+        "Ahmed Mansour": {
+            name: "Ahmed Mansour",
+            age: 48,
+            gender: "Male",
+            phone: "+20 123 456 7890",
+            email: "ahmed@example.com",
+            totalRecords: 4,
+            cvdCount: 2,
+            normalCount: 2,
+            currentRisk: 78,
+            records: [
+                { date: "15 May 2026", diagnosis: "CVD Detected", risk: "78%", doctor: "Dr. Sarah Ahmed" },
+                { date: "01 April 2026", diagnosis: "Normal", risk: "22%", doctor: "Dr. Sarah Ahmed" },
+                { date: "10 Dec 2025", diagnosis: "CVD Detected", risk: "65%", doctor: "Dr. Michael Lee" },
+                { date: "20 June 2025", diagnosis: "Normal", risk: "15%", doctor: "Dr. Sarah Ahmed" }
+            ],
+            riskHistory: [15, 22, 65, 78],
+            dates: ["Jun 2025", "Apr 2026", "Dec 2025", "May 2026"]
+        },
+        "Fatima Al-Zahra": {
+            name: "Fatima Al-Zahra",
+            age: 52,
+            gender: "Female",
+            phone: "+20 234 567 8901",
+            email: "fatima@example.com",
+            totalRecords: 3,
+            cvdCount: 1,
+            normalCount: 2,
+            currentRisk: 55,
+            records: [
+                { date: "10 May 2026", diagnosis: "CVD Detected", risk: "55%", doctor: "Dr. Sarah Ahmed" },
+                { date: "15 Mar 2026", diagnosis: "Normal", risk: "25%", doctor: "Dr. Sarah Ahmed" },
+                { date: "20 Jan 2026", diagnosis: "Normal", risk: "18%", doctor: "Dr. Sarah Ahmed" }
+            ],
+            riskHistory: [18, 25, 55],
+            dates: ["Jan 2026", "Mar 2026", "May 2026"]
+        },
+        "Omar El-Sayed": {
+            name: "Omar El-Sayed",
+            age: 45,
+            gender: "Male",
+            phone: "+20 345 678 9012",
+            email: "omar@example.com",
+            totalRecords: 2,
+            cvdCount: 0,
+            normalCount: 2,
+            currentRisk: 18,
+            records: [
+                { date: "18 May 2026", diagnosis: "Normal", risk: "18%", doctor: "Dr. Sarah Ahmed" },
+                { date: "10 Mar 2026", diagnosis: "Normal", risk: "12%", doctor: "Dr. Sarah Ahmed" }
+            ],
+            riskHistory: [12, 18],
+            dates: ["Mar 2026", "May 2026"]
+        },
+        "Laila Mahmoud": {
+            name: "Laila Mahmoud",
+            age: 38,
+            gender: "Female",
+            phone: "+20 456 789 0123",
+            email: "laila@example.com",
+            totalRecords: 2,
+            cvdCount: 0,
+            normalCount: 2,
+            currentRisk: 15,
+            records: [
+                { date: "20 May 2026", diagnosis: "Normal", risk: "15%", doctor: "Dr. Sarah Ahmed" },
+                { date: "05 Apr 2026", diagnosis: "Normal", risk: "10%", doctor: "Dr. Sarah Ahmed" }
+            ],
+            riskHistory: [10, 15],
+            dates: ["Apr 2026", "May 2026"]
+        }
+    };
+    
+    function loadPatientReport() {
+        const selectedPatient = document.getElementById('patientSelect').value;
+        
+        if (!selectedPatient) {
+            alert('Please select a patient');
+            return;
+        }
+        
+        const patient = patientData[selectedPatient];
+        
+        if (!patient) {
+            alert('Patient data not found');
+            return;
+        }
+        
+        // Show report content, hide empty state
+        document.getElementById('reportContent').classList.add('active');
+        document.getElementById('noPatientMsg').style.display = 'none';
+        
+        // Load patient info
+        document.getElementById('patientInfoCard').innerHTML = `
+            <div class="patient-info-item">
+                <div class="patient-info-label">Patient Name</div>
+                <div class="patient-info-value"><i class="fas fa-user"></i> ${patient.name}</div>
+            </div>
+            <div class="patient-info-item">
+                <div class="patient-info-label">Age / Gender</div>
+                <div class="patient-info-value"><i class="fas fa-calendar"></i> ${patient.age} years / ${patient.gender}</div>
+            </div>
+            <div class="patient-info-item">
+                <div class="patient-info-label">Contact</div>
+                <div class="patient-info-value"><i class="fas fa-phone"></i> ${patient.phone}<br><i class="fas fa-envelope"></i> ${patient.email}</div>
+            </div>
+        `;
+        
+        // Load stats
+        document.getElementById('statsGrid').innerHTML = `
+            <div class="stat-card" style="border-bottom-color: #3498db;">
+                <div class="stat-number" style="color: #3498db;">${patient.totalRecords}</div>
+                <div class="stat-label">Total Records</div>
+            </div>
+            <div class="stat-card" style="border-bottom-color: #e74c3c;">
+                <div class="stat-number" style="color: #e74c3c;">${patient.cvdCount}</div>
+                <div class="stat-label">CVD Cases</div>
+            </div>
+            <div class="stat-card" style="border-bottom-color: #27ae60;">
+                <div class="stat-number" style="color: #27ae60;">${patient.normalCount}</div>
+                <div class="stat-label">Normal Results</div>
+            </div>
+            <div class="stat-card" style="border-bottom-color: #f39c12;">
+                <div class="stat-number" style="color: #f39c12;">${patient.currentRisk}%</div>
+                <div class="stat-label">Current Risk</div>
+            </div>
+        `;
+        
+        // Load risk trend chart
+        let barsHtml = '';
+        const maxRisk = Math.max(...patient.riskHistory, 100);
+        patient.riskHistory.forEach((risk, index) => {
+            const height = (risk / 100) * 150;
+            const barColor = risk > 50 ? '#c0392b' : '#27ae60';
+            barsHtml += `
+                <div class="trend-bar-item">
+                    <div class="trend-bar" style="height: ${height}px; background: ${barColor};"></div>
+                    <div class="trend-label">${patient.dates[index]}</div>
+                    <div class="trend-label" style="font-weight: bold;">${risk}%</div>
+                </div>
+            `;
+        });
+        
+        document.getElementById('riskTrend').innerHTML = `
+            <div class="trend-title">
+                <i class="fas fa-chart-line"></i> Risk Score Trend
+            </div>
+            <div class="trend-bars">
+                ${barsHtml}
+            </div>
+        `;
+        
+        // Load history table
+        let tableHtml = `
+            <thead>
+                <tr><th>Date</th><th>Diagnosis</th><th>Risk %</th><th>Doctor</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+        `;
+        
+        patient.records.forEach(record => {
+            const badgeClass = record.diagnosis === 'CVD Detected' ? 'badge-cvd' : 'badge-normal';
+            tableHtml += `
+                <tr>
+                    <td>${record.date}</td>
+                    <td><span class="${badgeClass}">${record.diagnosis}</span></td>
+                    <td>${record.risk}</td>
+                    <td>${record.doctor}</td>
+                    <td><button class="btn-view-details" onclick="viewPredictionDetail('${record.date}', '${patient.name}')">View</button></td>
+                </tr>
+            `;
+        });
+        
+        tableHtml += `</tbody>`;
+        document.getElementById('historyTable').innerHTML = tableHtml;
+    }
+    
+    // Function to view prediction details
+    function viewPredictionDetail(date, patientName) {
+        // Go to prediction detail page with patient name
+        window.location.href = `../patient/prediction_detail.html?name=${encodeURIComponent(patientName)}&from=doctor`;
+    }
+</script>
+{% endblock %}

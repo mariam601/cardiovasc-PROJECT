@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'style2.css' %}">
+{% endblock %}
+{% block title %}Doctor Dashboard - CardioVasc{% endblock %}
+{% block content %}
+<div class="dashboard-page-container">
+    <div class="dashboard-card">
+        
+        <!-- Left Sidebar -->
+        <div class="dashboard-sidebar">
+            <div>
+                <div class="sidebar-header">
+                    <div class="logo-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h2>CardioVasc</h2>
+                    <p>Doctor Dashboard</p>
+                </div>
+                
+                <div class="doctor-info">
+                    <div class="doctor-avatar">
+                        <i class="fas fa-user-md"></i>
+                    </div>
+                    <h4>Dr. {{ profile.user.username|default:request.user.username }}</h4>
+                    <p>{{ profile.specialty|default:"Cardiologist" }}</p>
+                </div>
+                
+                <div class="sidebar-menu">
+                    <a href="{% url 'doctor-dashboard' %}" class="menu-item active">
+                        <i class="fas fa-tachometer-alt"></i> Dashboard
+                    </a>
+                    <a href="{% url 'doctor-appointments' %}" class="menu-item">
+                        <i class="fas fa-calendar-alt"></i> Appointments
+                    </a>
+                    <a href="{% url 'doctor-patients' %}" class="menu-item">
+                        <i class="fas fa-users"></i> My Patients
+                    </a>
+                    <a href="{% url 'doctor-reports' %}" class="menu-item">
+                        <i class="fas fa-chart-line"></i> Reports
+                    </a>
+                    <a href="{% url 'doctor-availability' %}" class="menu-item">
+                        <i class="fas fa-clock"></i> Availability</a>
+                    <a href="{% url 'doctor-profile-edit' %}" class="menu-item">
+                        <i class="fas fa-user-edit"></i> Profile
+                    </a>
+                    
+                </div>
+            </div>
+            
+            <a href="{% url 'logout' %}" class="menu-item logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+        
+        <!-- Right Content -->
+        <div class="dashboard-content">
+            
+            <div class="content-header">
+                <h3><i class="fas fa-tachometer-alt"></i> Dashboard Overview</h3>
+            </div>
+            
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-item" style="border-bottom-color: #3498db;">
+                    <div class="stat-icon">📅</div>
+                    <div class="stat-number" style="color: #3498db;">{{ pending_appointments }}</div>
+                    <div class="stat-label">New Requests</div>
+                </div>
+                <div class="stat-item" style="border-bottom-color: #9b59b6;">
+                    <div class="stat-icon">🔍</div>
+                    <div class="stat-number" style="color: #9b59b6;">{{ total_patients }}</div>
+                    <div class="stat-label">Total Patients</div>
+                </div>
+                <div class="stat-item" style="border-bottom-color: #e74c3c;">
+                    <div class="stat-icon">⚠️</div>
+                    <div class="stat-number" style="color: #e74c3c;">{{ confirmed_appointments }}</div>
+                    <div class="stat-label">Confirmed Appts</div>
+                </div>
+                <div class="stat-item" style="border-bottom-color: #27ae60;">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-number" style="color: #27ae60;">{{ total_patients }}</div>
+                    <div class="stat-label">Total Patients</div>
+                </div>
+            </div>
+            
+            <!-- Search & Actions -->
+            <div class="search-section">
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search by patient name..." onkeyup="searchPatients()">
+                    </div>
+                    <button class="btn-search" onclick="searchPatients()">
+                        <i class="fas fa-search"></i> Search
+                    </button>
+                    <button class="btn-search" onclick="clearSearch()" style="background: #95a5a6;">
+                        <i class="fas fa-times"></i> Clear
+                    </button>
+                </div>
+                <a href="{% url 'doctor-availability' %}" class="btn-availability">
+                    <i class="fas fa-calendar-plus"></i> Set Availability
+                </a>
+            </div>
+            
+            <!-- Appointments Table -->
+            <div class="table-responsive">
+                <table class="appointments-table" id="appointmentsTable">
+                    <thead>
+                        <tr>
+                            <th>Patient Details</th>
+                            <th>Requested Date & Time</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointmentsBody">
+                        {% for appt in recent_appointments %}
+                        <tr>
+                            <td>
+                                <div class="patient-name">{{ appt.patient.username }}</div>
+                                <a href="{% url 'patient_history' appt.patient.id %}" class="patient-link">
+                                    <i class="fas fa-file-medical-alt"></i> View Full History
+                                </a>
+                            </td>
+                            <td>
+                                <div class="appointment-date">{{ appt.date }}</div>
+                                <div class="appointment-time"><i class="far fa-clock"></i> {{ appt.time|default:"N/A" }}</div>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge {% if appt.status == 'confirmed' %}badge-success{% elif appt.status == 'cancelled' %}badge-danger{% else %}badge-warning{% endif %}">
+                                    {{ appt.status|capfirst }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3" style="text-align:center; padding:20px;">No appointments yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}

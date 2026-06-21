@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Refund - CardioVasc{% endblock %}
+{% block content %}
+<!-- Header -->
+<ul class="nav-menu">
+        <li><a href="{% url 'homepage' %}">Home</a></li>
+        <li><a href="{% url 'faq' %}">FAQ</a></li>
+        <li><a href="{% url 'doctor' %}">Our Team</a></li>
+        <li><a href="{% url 'about' %}">About Us</a></li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+    </ul>
+</div>
+
+<div class="refund-container">
+    <div class="refund-header">
+        <h1>💰 Refund Policy</h1>
+        <p>Understanding our refund and cancellation process</p>
+    </div>
+    
+    <div class="refund-body">
+        
+        <!-- Overview -->
+        <div class="refund-section">
+            <h2>📋 Overview</h2>
+            <p>At CardioVasc Heart Institute, we strive to provide the best healthcare services to our patients. We understand that sometimes plans change. This Refund Policy outlines the circumstances under which refunds are issued for consultation fees, procedures, and other services.</p>
+            <div class="refund-highlight">
+                <p>✅ All refunds are processed within <strong>7-10 business days</strong> from the date of approval.</p>
+            </div>
+        </div>
+        
+        <!-- Cancellation Timeline -->
+        <div class="refund-section">
+            <h2>⏰ Cancellation Timeline</h2>
+            <div class="timeline-box">
+                <div class="timeline-step">
+                    <div class="step-number">24h+</div>
+                    <h4>More than 24 hours</h4>
+                    <p>100% refund of consultation fee</p>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-number">12-24h</div>
+                    <h4>12 to 24 hours</h4>
+                    <p>50% refund of consultation fee</p>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-number">Less 12h</div>
+                    <h4>Less than 12 hours</h4>
+                    <p>No refund</p>
+                </div>
+                <div class="timeline-step">
+                    <div class="step-number">No-Show</div>
+                    <h4>Patient No-Show</h4>
+                    <p>No refund</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Consultation Refund -->
+        <div class="refund-section">
+            <h2>🩺 Consultation Fees Refund</h2>
+            <p><strong>Doctor Consultation:</strong> If you cancel your appointment, refunds are processed based on the cancellation timeline above.</p>
+            <ul>
+                <li>✅ <strong>Full Refund:</strong> Cancellation made 24+ hours before appointment time</li>
+                <li>⚠️ <strong>Partial Refund (50%):</strong> Cancellation made between 12-24 hours before appointment</li>
+                <li>❌ <strong>No Refund:</strong> Cancellation less than 12 hours before appointment or no-show</li>
+            </ul>
+        </div>
+        
+        <!-- Procedure Refund -->
+        <div class="refund-section">
+            <h2>🏥 Procedures & Surgeries Refund</h2>
+            <p>For surgical procedures and medical treatments, a separate refund policy applies:</p>
+            <ul>
+                <li><strong>Before Procedure:</strong> Cancellation 7+ days before scheduled procedure - 90% refund</li>
+                <li><strong>1-7 Days Before:</strong> Cancellation 1-7 days before - 50% refund</li>
+                <li><strong>Less than 24 hours:</strong> No refund for procedure cancellation</li>
+                <li><strong>Post-Procedure:</strong> No refund after procedure has been performed</li>
+            </ul>
+        </div>
+        
+        <!-- Package Refund -->
+        <div class="refund-section">
+            <h2>📦 Health Packages Refund</h2>
+            <p>For pre-booked health checkup packages and treatment packages:</p>
+            <ul>
+                <li><strong>Unused Package:</strong> Full refund if cancelled within 7 days of purchase</li>
+                <li><strong>Partially Used Package:</strong> Refund for unused services only (minus administrative fees)</li>
+                <li><strong>Expired Package:</strong> No refund for packages expired beyond validity period</li>
+            </ul>
+        </div>
+        
+        <!-- How to Request Refund -->
+        <div class="refund-section">
+            <h2>📝 How to Request a Refund</h2>
+            <p>To request a refund, please follow these steps:</p>
+            <ul>
+                <li><strong>Step 1:</strong> Contact our billing department via email at <strong>refunds@cardiovasc.com</strong></li>
+                <li><strong>Step 2:</strong> Provide your appointment/booking ID and reason for cancellation</li>
+                <li><strong>Step 3:</strong> Attach any relevant documents (receipts, payment proof)</li>
+                <li><strong>Step 4:</strong> Our team will review your request within 2-3 business days</li>
+                <li><strong>Step 5:</strong> Approved refunds will be processed within 7-10 business days</li>
+            </ul>
+        </div>
+        
+        <!-- Payment Method Refund -->
+        <div class="refund-section">
+            <h2>💳 Refund via Payment Method</h2>
+            <p>Refunds will be issued using the original payment method used for the transaction:</p>
+            <ul>
+                <li>💳 <strong>Credit/Debit Card:</strong> Refund to same card (3-7 business days)</li>
+                <li>📱 <strong>UPI (Google Pay, PhonePe, Paytm):</strong> Refund to same UPI ID (1-3 business days)</li>
+                <li>🏦 <strong>Net Banking:</strong> Refund to same bank account (3-5 business days)</li>
+                <li>💵 <strong>Cash Payment:</strong> Refund via bank transfer or cheque (7-10 business days)</li>
+                <li>🩺 <strong>Insurance:</strong> Subject to insurance company terms and conditions</li>
+            </ul>
+        </div>
+        
+        <!-- Non-Refundable Items -->
+        <div class="refund-section">
+            <h2>🚫 Non-Refundable Items</h2>
+            <p>The following items and services are non-refundable:</p>
+            <ul>
+                <li>❌ Medications and pharmacy items once dispensed</li>
+                <li>❌ Laboratory tests already performed</li>
+                <li>❌ Diagnostic imaging services (X-ray, MRI, CT scan) after completion</li>
+                <li>❌ Telemedicine consultation after service has been delivered</li>
+                <li>❌ Administrative fees and convenience charges</li>
+                <li>❌ Third-party services not directly billed by CardioVasc</li>
+            </ul>
+        </div>
+        
+        <!-- Special Circumstances -->
+        <div class="refund-section">
+            <h2>🔄 Special Circumstances</h2>
+            <p>In case of emergency, medical complications, or death of the patient, full or partial refunds may be considered on a case-by-case basis. Please contact our patient relations team for assistance.</p>
+            <ul>
+                <li><strong>Doctor Unavailability:</strong> Full refund or free rescheduling if doctor cancels</li>
+                <li><strong>Hospital Cancellation:</strong> Full refund if hospital cancels due to unforeseen circumstances</li>
+                <li><strong>Medical Emergency:</strong> Partial or full refund with valid medical documentation</li>
+            </ul>
+        </div>
+        
+        <!-- Contact -->
+        <div class="contact-refund">
+            <h3>📞 Need Help?</h3>
+            <p>Contact our Billing & Refund Department for any questions</p>
+            <p>📧 Email: <a href="mailto:refunds@cardiovasc.com">refunds@cardiovasc.com</a></p>
+            <p>📞 Phone: +91 44 8765 4321 (Mon-Sat, 9AM-6PM)</p>
+        </div>
+        
+        <div class="last-updated">
+            Last Updated: May 4, 2026 | Version 2.0
+        </div>
+        
+        <div style="text-align: center;">
+            <button class="btn-back" onclick="window.location.href="{% url 'homepage' %}"">← Back to Home</button>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+{% endblock %}
