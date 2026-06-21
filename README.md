@@ -22,7 +22,7 @@ It provides a user-friendly interface that allows users to register, log in, vie
 
 ---
 
-## 🛠️ Technologies Used
+##  Technologies Used
 
 - Python
 - Django
